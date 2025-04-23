@@ -1,19 +1,16 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios'
 export type {AxiosError} from 'axios'
-import UserApi from '@/features/users/api'
 import AuthApi from '@features/auth/api'
 import DashboardApi from '@features/dashboard/api'
 
 export class Api {
   apiInstance: AxiosInstance
   authApi: AuthApi
-  userApi: UserApi
   dashboardApi: DashboardApi
 
   constructor(config: AxiosRequestConfig) {
     this.apiInstance = axios.create(config)
     this.authApi = new AuthApi(this.apiInstance)
-    this.userApi = new UserApi(this.apiInstance)
     this.dashboardApi = new DashboardApi(this.apiInstance)
     this.apiInstance?.interceptors.request.use(
       function (config) {

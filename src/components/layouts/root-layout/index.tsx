@@ -4,48 +4,21 @@ import {Fragment, useEffect} from 'react'
 import {Layout, Menu, Avatar, Typography, Dropdown, Space} from 'antd'
 import {
   DashboardOutlined,
-  UserOutlined,
   LogoutOutlined,
   BugOutlined,
   FileSearchOutlined,
 } from '@ant-design/icons'
-import styled from 'styled-components'
 import {usePathname, useRouter} from 'next/navigation'
 import Link from 'next/link'
 import {useAuthStore} from '@stores/auth-store'
 import Head from 'next/head'
 import {Inter} from 'next/font/google'
 import Loader from '@components/ui/loader'
+import {Logo, StyledContent, StyledHeader} from './styles'
 
-const {Header, Sider, Content} = Layout
+const {Sider} = Layout
 const {Text, Title} = Typography
 
-const Logo = styled.div`
-  height: 32px;
-  margin: 16px;
-  display: flex;
-  align-items: center;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-`
-
-const StyledHeader = styled(Header)`
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-`
-
-const StyledContent = styled(Content)`
-  margin: 24px 16px;
-  padding: 24px;
-  background: white;
-  min-height: calc(100vh - 112px);
-  border-radius: 4px;
-`
 const inter = Inter({subsets: ['latin']})
 
 const PUBLIC_ROUTES = ['/']
@@ -80,12 +53,11 @@ const RootLayout = ({children}: {children: React.ReactNode}) => {
     }
   }, [pathname, isPublicRoute, isLoginRoute, router, setUserData])
 
-  // Allow public and login routes to render without restriction
+  // Allow public and login routes to render without Layout
   if (isPublicRoute || isLoginRoute) {
     return <Fragment>{children}</Fragment>
   }
 
-  // Optional loading fallback while auth check is happening
   if (!isAuthenticated) {
     return <Loader />
   }
@@ -96,11 +68,6 @@ const RootLayout = ({children}: {children: React.ReactNode}) => {
   }
 
   const userMenuItems = [
-    {
-      key: 'profile',
-      label: <span>Profile</span>,
-      icon: <UserOutlined />,
-    },
     {
       key: 'logout',
       label: <span>Logout</span>,

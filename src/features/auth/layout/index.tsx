@@ -80,6 +80,7 @@ export default function LoginPage() {
             rules={[{required: true, message: 'Please input your username!'}]}
           >
             <Input
+              autoComplete='off'
               prefix={<UserOutlined />}
               placeholder='Username'
               size='large'
@@ -90,6 +91,7 @@ export default function LoginPage() {
             rules={[{required: true, message: 'Please input your password!'}]}
           >
             <Input.Password
+              autoComplete='off'
               prefix={<LockOutlined />}
               placeholder='Password'
               size='large'

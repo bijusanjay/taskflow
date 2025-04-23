@@ -122,3 +122,60 @@ export const dailyTaskCounts: DailyTaskCount[] = [
   {date: '2025-04-22', count: 5},
   {date: '2025-04-23', count: 4},
 ]
+
+interface Project {
+  id: string
+  name: string
+  description: string
+}
+
+export const projects: Project[] = [
+  {id: '1', name: 'TeamX', description: 'Frontend Team'},
+  {id: '2', name: 'TeamY', description: 'Backend Team'},
+]
+
+interface Bug {
+  id: string
+  title: string
+  description: string
+  status: 'open' | 'in_progress' | 'closed'
+  priority: 'low' | 'medium' | 'high'
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  assignedTo: string
+  projectId: string
+}
+
+interface Project {
+  id: string
+  name: string
+  description: string
+}
+
+export const bugs: Bug[] = [
+  {
+    id: '1',
+    title: 'Login page crashes',
+    description: 'The app crashes when wrong credentials are entered',
+    status: 'open',
+    priority: 'high',
+    createdAt: '2025-04-14T15:00:00Z',
+    updatedAt: '2025-04-14T15:00:00Z',
+    createdBy: '2',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '2',
+    title: 'Images not loading',
+    description: 'Product images not loading in the product page',
+    status: 'in_progress',
+    priority: 'medium',
+    createdAt: '2025-04-16T13:20:00Z',
+    updatedAt: '2025-04-17T09:15:00Z',
+    createdBy: '1',
+    assignedTo: '2',
+    projectId: '1',
+  },
+]
