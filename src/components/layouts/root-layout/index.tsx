@@ -10,11 +10,12 @@ import {
   FileSearchOutlined,
 } from '@ant-design/icons'
 import styled from 'styled-components'
-import {useRouter} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import Link from 'next/link'
 import {useAuthStore} from '@stores/auth-store'
 import Head from 'next/head'
 import {Inter} from 'next/font/google'
+import Loader from '@components/ui/loader'
 
 const {Header, Sider, Content} = Layout
 const {Text, Title} = Typography
@@ -47,19 +48,46 @@ const StyledContent = styled(Content)`
 `
 const inter = Inter({subsets: ['latin']})
 
+const PUBLIC_ROUTES = ['/']
+const LOGIN_ROUTES = ['/login']
+
 const RootLayout = ({children}: {children: React.ReactNode}) => {
-  const {user, isAuthenticated, logout} = useAuthStore()
+  const {user, isAuthenticated, logout, setUserData} = useAuthStore()
+  const pathname = usePathname()
   const router = useRouter()
 
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname === route)
+  const isLoginRoute = LOGIN_ROUTES.includes(pathname)
+
   useEffect(() => {
-    // Redirect to login if not authenticated
-    if (!isAuthenticated) {
+    // Skip auth check on public routes
+    if (isPublicRoute) return
+
+    const stored = localStorage.getItem('auth-storage')
+    const parsed = stored ? JSON.parse(stored) : null
+    const storedUser = parsed?.state?.user
+    const authenticated = parsed?.state?.isAuthenticated
+
+    if (isLoginRoute && authenticated && storedUser) {
+      router.push('/dashboard')
+      return
+    }
+
+    if (authenticated && storedUser) {
+      setUserData(storedUser)
+    } else {
       router.push('/login')
     }
-  }, [isAuthenticated, router])
+  }, [pathname, isPublicRoute, isLoginRoute, router, setUserData])
 
-  if (isAuthenticated !== undefined && !isAuthenticated) {
+  // Allow public and login routes to render without restriction
+  if (isPublicRoute || isLoginRoute) {
     return <Fragment>{children}</Fragment>
+  }
+
+  // Optional loading fallback while auth check is happening
+  if (!isAuthenticated) {
+    return <Loader />
   }
 
   const handleLogout = () => {
@@ -125,7 +153,7 @@ const RootLayout = ({children}: {children: React.ReactNode}) => {
           <Layout style={{marginLeft: 250}}>
             <StyledHeader>
               <Title level={4} style={{margin: 0}}>
-                {user.role === 'developer'
+                {user?.role === 'developer'
                   ? 'Developer Dashboard'
                   : 'Manager Dashboard'}
               </Title>

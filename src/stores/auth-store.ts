@@ -4,12 +4,13 @@ import {persist} from 'zustand/middleware'
 
 interface AuthState {
   user: User | null
-  isAuthenticated: boolean
+  isAuthenticated: boolean | undefined
   login: (
     username: string,
     password: string
   ) => Promise<{success: boolean; message?: string}>
   logout: () => void
+  setUserData: (user: User) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -18,7 +19,6 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: undefined,
       login: async (username: string, password: string) => {
-        // Simple mock authentication
         const user = users.find(
           (u) => u.username === username && u.password === password
         )
@@ -35,6 +35,9 @@ export const useAuthStore = create<AuthState>()(
       },
       logout: () => {
         set({user: null, isAuthenticated: false})
+      },
+      setUserData: (user: User) => {
+        set({user, isAuthenticated: true})
       },
     }),
     {
