@@ -112,7 +112,7 @@ const RootLayout = ({children}: {children: React.ReactNode}) => {
                 {
                   key: 'tasks',
                   icon: <FileSearchOutlined />,
-                  label: <Link href='/dashboard/tasks'>Tasks</Link>,
+                  label: <Link href='/tasks'>Tasks</Link>,
                 },
               ]}
             />
