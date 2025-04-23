@@ -1,26 +1,44 @@
-// src/stores/auth-store.ts
-import { create } from 'zustand'
-
-export interface UserData {
-  name: string
-  id: string
-  email: string
-  role: string
-  actions: Array<string> | null
-  orgId: string
-  apiKey: string
-}
+import {User, users} from '@config/mock-data'
+import {create} from 'zustand'
+import {persist} from 'zustand/middleware'
 
 interface AuthState {
-  userData: UserData | null
-  setUserData: (data: UserData) => void
-  clearUserData: () => void
+  user: User | null
+  isAuthenticated: boolean
+  login: (
+    username: string,
+    password: string
+  ) => Promise<{success: boolean; message?: string}>
+  logout: () => void
 }
 
-const useAuthStore = create<AuthState>(set => ({
-  userData: null,
-  setUserData: data => set({ userData: data }),
-  clearUserData: () => set({ userData: null }),
-}))
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      isAuthenticated: undefined,
+      login: async (username: string, password: string) => {
+        // Simple mock authentication
+        const user = users.find(
+          (u) => u.username === username && u.password === password
+        )
 
-export default useAuthStore
+        if (user) {
+          set({user, isAuthenticated: true})
+          return {success: true}
+        }
+
+        return {
+          success: false,
+          message: 'Invalid username or password',
+        }
+      },
+      logout: () => {
+        set({user: null, isAuthenticated: false})
+      },
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+)

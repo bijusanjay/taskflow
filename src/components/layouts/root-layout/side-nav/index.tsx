@@ -16,7 +16,6 @@ import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import Logo from '@public/assets/svgs/nextjs-logo.svg'
 import Image from 'next/image'
-import useAuthStore from '@stores/auth-store'
 
 const StyledMenu = styled(Menu)`
   &.ant-menu-root {
@@ -58,8 +57,6 @@ const MenuItemsContainer = styled.div`
 
 const SideMenu = () => {
   const pathname = usePathname()
-  const {userData} = useAuthStore()
-
   const [selectedKey, setSelectedKey] = useState<string[]>([])
 
   const items = [
@@ -78,29 +75,26 @@ const SideMenu = () => {
       icon: <UnorderedListOutlined />,
       label: <Link href='/events'>Events</Link>,
     },
-    ...(userData?.role === 'admin'
-      ? [
-          {
-            key: '4',
-            icon: <FundViewOutlined />,
-            label: <Link href='/tickets'>Tickets</Link>,
-          },
-          {
-            key: '5',
-            icon: <UserOutlined />,
-            label: <Link href='/users'>Manage users</Link>,
-          },
-          {
-            key: '6',
-            icon: <SnippetsOutlined />,
-            label: (
-              <a href='/docs/index.html' target='blank'>
-                Docs
-              </a>
-            ),
-          },
-        ]
-      : []),
+    {
+      key: '4',
+      icon: <FundViewOutlined />,
+      label: <Link href='/tickets'>Tickets</Link>,
+    },
+    {
+      key: '5',
+      icon: <UserOutlined />,
+      label: <Link href='/users'>Manage users</Link>,
+    },
+    {
+      key: '6',
+      icon: <SnippetsOutlined />,
+      label: (
+        <a href='/docs/index.html' target='blank'>
+          Docs
+        </a>
+      ),
+    },
+    ,
     {
       key: '7',
       icon: <SettingOutlined />,

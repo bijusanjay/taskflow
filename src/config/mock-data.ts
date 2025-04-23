@@ -1,0 +1,124 @@
+// User
+export interface User {
+  id: string
+  username: string
+  password: string
+  role: 'developer' | 'manager'
+  name: string
+  avatar: string
+}
+
+export interface Task {
+  id: string
+  title: string
+  description: string
+  status: 'open' | 'in_progress' | 'review' | 'closed'
+  priority: 'low' | 'medium' | 'high' | 'critical'
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  assignedTo: string
+}
+
+export interface DailyTaskCount {
+  date: string
+  count: number
+}
+
+// Mock Users
+export const users: User[] = [
+  {
+    id: '1',
+    username: 'dev1',
+    password: 'password123',
+    role: 'developer',
+    name: 'John Developer',
+    avatar: 'https://robohash.org/dev1',
+  },
+  {
+    id: '2',
+    username: 'dev2',
+    password: 'password123',
+    role: 'developer',
+    name: 'Jane Coder',
+    avatar: 'https://robohash.org/dev2',
+  },
+  {
+    id: '3',
+    username: 'manager1',
+    password: 'password123',
+    role: 'manager',
+    name: 'Mike Manager',
+    avatar: 'https://robohash.org/manager1',
+  },
+]
+
+// Mock Tasks
+export const tasks: Task[] = [
+  {
+    id: '1',
+    title: 'Fix login button',
+    description: 'The login button is not working properly on the mobile view',
+    status: 'open',
+    priority: 'high',
+    createdAt: '2025-04-15T10:00:00Z',
+    updatedAt: '2025-04-15T10:00:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+  },
+  {
+    id: '2',
+    title: 'Add form validation',
+    description: 'The registration form needs email validation',
+    status: 'in_progress',
+    priority: 'medium',
+    createdAt: '2025-04-16T09:00:00Z',
+    updatedAt: '2025-04-17T14:30:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+  },
+  {
+    id: '3',
+    title: 'Implement dark mode',
+    description: 'Add dark mode toggle to the settings page',
+    status: 'review',
+    priority: 'low',
+    createdAt: '2025-04-10T15:20:00Z',
+    updatedAt: '2025-04-19T11:45:00Z',
+    createdBy: '3',
+    assignedTo: '2',
+  },
+  {
+    id: '4',
+    title: 'Fix API error handling',
+    description: 'Improve error messages for failed API requests',
+    status: 'closed',
+    priority: 'high',
+    createdAt: '2025-04-05T08:15:00Z',
+    updatedAt: '2025-04-12T16:30:00Z',
+    createdBy: '3',
+    assignedTo: '2',
+  },
+  {
+    id: '5',
+    title: 'Update dependencies',
+    description: 'Update all npm packages to latest versions',
+    status: 'open',
+    priority: 'critical',
+    createdAt: '2025-04-20T13:10:00Z',
+    updatedAt: '2025-04-20T13:10:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+  },
+]
+
+// Mock daily task counts for trend line
+export const dailyTaskCounts: DailyTaskCount[] = [
+  {date: '2025-04-17', count: 3},
+  {date: '2025-04-18', count: 4},
+  {date: '2025-04-19', count: 5},
+  {date: '2025-04-20', count: 4},
+  {date: '2025-04-21', count: 3},
+  {date: '2025-04-22', count: 5},
+  {date: '2025-04-23', count: 4},
+]
