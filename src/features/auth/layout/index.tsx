@@ -38,7 +38,6 @@ export default function LoginPage() {
   const router = useRouter()
 
   useEffect(() => {
-    // Redirect to dashboard if already authenticated
     if (isAuthenticated) {
       router.push('/dashboard')
     }
@@ -60,8 +59,6 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
-
-  console.log('Login')
 
   return (
     <LoginContainer>

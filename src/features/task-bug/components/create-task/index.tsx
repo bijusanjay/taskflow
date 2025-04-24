@@ -17,7 +17,7 @@ import {
   HeaderContent,
   StyledCard,
   StyledPageHeader,
-} from '../styles'
+} from '../../styles'
 
 const {TextArea} = Input
 const {Option} = Select

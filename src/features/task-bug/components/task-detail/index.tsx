@@ -26,7 +26,7 @@ import {
   HeaderTitle,
   HeaderWrapper,
   StyledPageHeader,
-} from '../styles'
+} from '../../styles'
 import {bugs, projects, tasks, User, users} from '@config/mock-data'
 import {priorityColors, statusColors} from '@utils/constants'
 
