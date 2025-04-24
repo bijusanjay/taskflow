@@ -1,31 +1,66 @@
 import React, {useMemo, useState} from 'react'
-import { Table, Tag, Space, Button, Typography, Tabs, Select} from 'antd'
-import {BugOutlined, ProjectOutlined, FilterOutlined, LinkOutlined} from '@ant-design/icons'
+import { Table, Tag, Space, Button, Tabs} from 'antd'
+import {BugOutlined, ProjectOutlined, LinkOutlined} from '@ant-design/icons'
 import {useRouter} from 'next/navigation'
-import {Bug, bugs, projects, Task, tasks, User, users} from '@config/mock-data'
+import {Bug, bugs, Task, tasks, User, users} from '@config/mock-data'
 import { ProjectHeader, StyledTabs } from '../styles'
 import { priorityColors, statusColors } from '@utils/constants'
 import Link from 'next/link'
+import FilterBar from '../components/filter'
 
-const {Title} = Typography
 const {TabPane} = Tabs
 
+interface FilterState {
+  project: string;
+  status?: string;
+  priority?: string;
+}
+
 const TasksAndBugsLayout: React.FC = () => {
-  const [selectedProject, setSelectedProject] = useState<string>('1')
+  const [filters, setFilters] = useState<FilterState>({
+    project: '1',
+    status: undefined,
+    priority: undefined
+  });
+  
   const router = useRouter()
   const currentUser: User = users[0]
 
-  const filteredTasks = selectedProject
-    ? tasks.filter((task) => task.projectId === selectedProject)
-    : tasks
+  const filteredTasks = useMemo(() => {
+    let filtered = tasks;
+    
+    if (filters.project) {
+      filtered = filtered.filter((task) => task.projectId === filters.project);
+    }
+    
+    if (filters.status) {
+      filtered = filtered.filter((task) => task.status === filters.status);
+    }
+    
+    if (filters.priority) {
+      filtered = filtered.filter((task) => task.priority === filters.priority);
+    }
+    
+    return filtered;
+  }, [filters]);
 
-  const filteredBugs = selectedProject
-    ? bugs.filter((bug) => bug.projectId === selectedProject)
-    : bugs
-
-  const handleProjectSelect = (projectId: string) => {
-    setSelectedProject(projectId)
-  }
+  const filteredBugs = useMemo(() => {
+    let filtered = bugs;
+    
+    if (filters.project) {
+      filtered = filtered.filter((bug) => bug.projectId === filters.project);
+    }
+    
+    if (filters.status) {
+      filtered = filtered.filter((bug) => bug.status === filters.status);
+    }
+    
+    if (filters.priority) {
+      filtered = filtered.filter((bug) => bug.priority === filters.priority);
+    }
+    
+    return filtered;
+  }, [filters]);
 
   const handleItemClick = (
     type: 'task' | 'bug',
@@ -171,23 +206,10 @@ const TasksAndBugsLayout: React.FC = () => {
     <div>
       <ProjectHeader>
         <div>
-          {/* {selectedProject && (
-          )} */}
-          <Title level={5} style={{margin: 0}}>
-            <Select
-              value={selectedProject}
-              onChange={(value) => handleProjectSelect(value)}
-              style={{minWidth: 200}}
-              dropdownStyle={{minWidth: 200}}
-              placeholder='Select Team'
-            >
-              {projects.map((project) => (
-                <Select.Option key={project.id} value={project.id}>
-                  {project.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Title>
+          <FilterBar
+            filters={filters}
+            onFilterChange={setFilters}
+          />
         </div>
         <Space>
           {currentUser.role === 'developer' && (
@@ -206,8 +228,7 @@ const TasksAndBugsLayout: React.FC = () => {
                 Create Task
               </Button>
             </>
-          )}
-          <Button icon={<FilterOutlined />}>Filter</Button>
+          )}         
         </Space>
       </ProjectHeader>
 
