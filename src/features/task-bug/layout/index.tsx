@@ -7,6 +7,7 @@ import { ProjectHeader } from '../styles'
 import { priorityColors, statusColors } from '@utils/constants'
 import Link from 'next/link'
 import FilterBar from '../components/filter'
+import { useAuthStore } from '@stores/auth-store'
 
 interface FilterState {
   project: string
@@ -15,6 +16,7 @@ interface FilterState {
 }
 
 const TasksAndBugsLayout: React.FC = () => {
+  const { user } = useAuthStore()
   const [filters, setFilters] = useState<FilterState>({
     project: '1',
     status: undefined,
@@ -23,7 +25,6 @@ const TasksAndBugsLayout: React.FC = () => {
 
   const router = useRouter()
   const pathname = usePathname()
-  const currentUser: User = users[0]
 
   const activeTab = pathname.split('/')[1] === 'bugs' ? 'bugs' : 'tasks'
 
@@ -212,14 +213,18 @@ const TasksAndBugsLayout: React.FC = () => {
           <FilterBar filters={filters} onFilterChange={setFilters} />
         </div>
         <Space>
-          {currentUser.role === 'developer' && (
+          {user.role === 'developer' && (
             <>
-              <Button type="primary" icon={<BugOutlined />} onClick={() => handleCreateBtn('bug')}>
-                Create Bug
-              </Button>
-              <Button icon={<ProjectOutlined />} onClick={() => handleCreateBtn('task')}>
-                Create Task
-              </Button>
+              {activeTab === 'bugs' && (
+                <Button icon={<BugOutlined />} onClick={() => handleCreateBtn('bug')}>
+                  Create Bug
+                </Button>
+              )}
+              {activeTab === 'tasks' && (
+                <Button icon={<ProjectOutlined />} onClick={() => handleCreateBtn('task')}>
+                  Create Task
+                </Button>
+              )}
             </>
           )}
         </Space>
