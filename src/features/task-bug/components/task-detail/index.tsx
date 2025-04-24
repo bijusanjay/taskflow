@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Descriptions,
   Tag,
@@ -55,7 +55,7 @@ const ItemDetailView: React.FC = () => {
 
   const assignedUser = users.find(user => user.id === item?.assignedTo)
 
-  const historyItems = [
+  const historyItems = useMemo(()=> [
     {
       id: '1',
       action: 'Created',
@@ -74,7 +74,7 @@ const ItemDetailView: React.FC = () => {
       timestamp: new Date(item?.updatedAt || '').toLocaleString(),
       user: assignedUser?.name,
     },
-  ]
+  ],[])
 
   // Handle edit modal
   const showEditModal = () => {
@@ -119,7 +119,6 @@ const ItemDetailView: React.FC = () => {
 
   return (
     <DetailsContainer>
-      <StyledPageHeader>
         <Breadcrumb
           items={[
             { title: 'Home' },
@@ -128,6 +127,7 @@ const ItemDetailView: React.FC = () => {
             { title: item.id },
           ]}
         />
+      <StyledPageHeader>
         <HeaderWrapper>
           <HeaderTitle>
             <Button type="text" icon={<ArrowLeftOutlined />} onClick={() => router.back()} />
@@ -194,7 +194,7 @@ const ItemDetailView: React.FC = () => {
       {/* Edit Modal */}
       <Modal
         title={`Edit ${isTask ? 'Task' : 'Bug'}`}
-        visible={editModalVisible}
+        open={editModalVisible}
         onCancel={handleEditCancel}
         footer={null}
       >
@@ -262,7 +262,7 @@ const ItemDetailView: React.FC = () => {
       {/* Comment Modal */}
       <Modal
         title="Add Comment"
-        visible={commentModalVisible}
+        open={commentModalVisible}
         onCancel={handleCommentCancel}
         footer={null}
       >
@@ -279,6 +279,7 @@ const ItemDetailView: React.FC = () => {
         </Form>
       </Modal>
     </DetailsContainer>
+    // <></>
   )
 }
 

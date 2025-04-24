@@ -16,6 +16,7 @@ export const StyledPageHeader = styled.div`
   background: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
+  margin-top: 12px
 `
 
 export const HeaderContent = styled.div`
@@ -25,8 +26,8 @@ export const HeaderContent = styled.div`
 `
 
 export const DetailsContainer = styled.div`
-  padding: 24px;
-  background: #f0f2f5;
+  // padding: 24px;
+  // background: #f0f2f5;
   min-height: 100vh;
 `
 
@@ -41,7 +42,6 @@ export const HeaderWrapper = styled.div`
 `
 
 export const HeaderTitle = styled.div`
-  margin-top: 16px;
 `
 
 export const ProjectHeader = styled.div`
