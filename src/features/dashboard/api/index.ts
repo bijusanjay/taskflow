@@ -8,7 +8,6 @@ class TaskApi {
     this.api = apiInstance
   }
 
-  // Get all tasks
   getAllTasks = async (): Promise<
     {data: Task[]; err?: undefined} | {err: string; data?: undefined}
   > => {
@@ -20,7 +19,6 @@ class TaskApi {
     }
   }
 
-  // Get tasks for a specific user
   getUserTasks = async (
     userId: string
   ): Promise<
@@ -35,7 +33,6 @@ class TaskApi {
     }
   }
 
-  // Get daily task count trend data
   getDailyTaskCounts = async (): Promise<
     {data: DailyTaskCount[]; err?: undefined} | {err: string; data?: undefined}
   > => {
@@ -47,7 +44,6 @@ class TaskApi {
     }
   }
 
-  // Update task status
   updateTaskStatus = async (
     taskId: string,
     status: Task['status']
