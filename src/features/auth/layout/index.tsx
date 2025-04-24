@@ -1,13 +1,13 @@
 'use client'
 
-import {useEffect, useState} from 'react'
-import {Form, Input, Button, Card, Typography, message} from 'antd'
-import {UserOutlined, LockOutlined} from '@ant-design/icons'
+import { useEffect, useState } from 'react'
+import { Form, Input, Button, Card, Typography, message } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
-import {useRouter} from 'next/navigation'
-import {useAuthStore} from '@stores/auth-store'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@stores/auth-store'
 
-const {Title} = Typography
+const { Title } = Typography
 
 const LoginContainer = styled.div`
   display: flex;
@@ -34,11 +34,10 @@ interface LoginFormValues {
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
-  const {login, isAuthenticated} = useAuthStore()
+  const { login, isAuthenticated } = useAuthStore()
   const router = useRouter()
 
   useEffect(() => {
-    // Redirect to dashboard if already authenticated
     if (isAuthenticated) {
       router.push('/dashboard')
     }
@@ -61,8 +60,6 @@ export default function LoginPage() {
     }
   }
 
-  console.log('Login')
-
   return (
     <LoginContainer>
       <StyledCard>
@@ -70,45 +67,39 @@ export default function LoginPage() {
           <Title level={2}>Bug Tracker</Title>
         </LogoContainer>
         <Form
-          name='login'
-          initialValues={{remember: true}}
+          name="login"
+          initialValues={{ remember: true }}
           onFinish={handleSubmit}
-          layout='vertical'
+          layout="vertical"
         >
           <Form.Item
-            name='username'
-            rules={[{required: true, message: 'Please input your username!'}]}
+            name="username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input
-              autoComplete='off'
+              autoComplete="off"
               prefix={<UserOutlined />}
-              placeholder='Username'
-              size='large'
+              placeholder="Username"
+              size="large"
             />
           </Form.Item>
           <Form.Item
-            name='password'
-            rules={[{required: true, message: 'Please input your password!'}]}
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password
-              autoComplete='off'
+              autoComplete="off"
               prefix={<LockOutlined />}
-              placeholder='Password'
-              size='large'
+              placeholder="Password"
+              size="large"
             />
           </Form.Item>
           <Form.Item>
-            <Button
-              type='primary'
-              htmlType='submit'
-              size='large'
-              block
-              loading={loading}
-            >
+            <Button type="primary" htmlType="submit" size="large" block loading={loading}>
               Log in
             </Button>
           </Form.Item>
-          <Typography.Text type='secondary'>
+          <Typography.Text type="secondary">
             Use username: dev1 or manager1 with password: password123
           </Typography.Text>
         </Form>

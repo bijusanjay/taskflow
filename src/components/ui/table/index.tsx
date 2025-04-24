@@ -115,23 +115,19 @@ const TableComponent = ({
 }: TableComponentProps) => {
   const locale = {
     emptyText: (
-      <div className='flex flex-col justify-center items-center'>
-        <p className='text-[#8c8c8c] font-bold my-2'>No Data</p>
-        <p className='text-[#8c8c8c] my-2'>No Data to display.</p>
+      <div className="flex flex-col items-center justify-center">
+        <p className="my-2 font-bold text-[#8c8c8c]">No Data</p>
+        <p className="my-2 text-[#8c8c8c]">No Data to display.</p>
       </div>
     ),
   }
 
-  const itemRender = (
-    page: number,
-    type: 'prev' | 'next',
-    originalElement: React.ReactNode,
-  ) => {
+  const itemRender = (page: number, type: 'prev' | 'next', originalElement: React.ReactNode) => {
     if (type === 'prev') {
       const isFirstPage = page === 0
       return (
         <button
-          className={`left-6 absolute w-[100px] border-[#d0d5dd] border-[1px] rounded-[8px] p-1 ${
+          className={`absolute left-6 w-[100px] rounded-[8px] border-[1px] border-[#d0d5dd] p-1 ${
             isFirstPage ? 'opacity-[0.5]' : 'opacity-[1]'
           }`}
           disabled={isFirstPage}
@@ -151,8 +147,7 @@ const TableComponent = ({
       const isLastPage =
         pagination &&
         typeof pagination !== 'boolean' &&
-        pagination.current ===
-          Math.ceil((pagination.total || 0) / (pagination.pageSize || 10))
+        pagination.current === Math.ceil((pagination.total || 0) / (pagination.pageSize || 10))
       return (
         <button
           disabled={isLastPage}
@@ -162,7 +157,7 @@ const TableComponent = ({
               return
             }
           }}
-          className={`right-6 absolute w-[100px] border-[#d0d5dd] border-[1px] rounded-[8px] p-1 ${
+          className={`absolute right-6 w-[100px] rounded-[8px] border-[1px] border-[#d0d5dd] p-1 ${
             isLastPage ? 'opacity-[0.5]' : 'opacity-[1]'
           }`}
         >
@@ -175,7 +170,7 @@ const TableComponent = ({
   }
   return (
     <TableWrapper
-      className='custom-table'
+      className="custom-table"
       locale={locale}
       dataSource={dataSource}
       columns={columns}

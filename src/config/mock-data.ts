@@ -3,21 +3,47 @@ export interface User {
   id: string
   username: string
   password: string
-  role: 'developer' | 'manager'
+  role: ROLE
   name: string
   avatar: string
 }
+
+export const STATUS = {
+  OPEN: 'open',
+  IN_PROGRESS: 'in_progress',
+  REVIEW: 'review',
+  CLOSED: 'closed',
+} as const
+
+export type STATUS = (typeof STATUS)[keyof typeof STATUS]
+
+export const PRIORITY = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+  CRITICAL: 'critical',
+} as const
+
+export type PRIORITY = (typeof PRIORITY)[keyof typeof PRIORITY]
+
+export const ROLE = {
+  DEVELOPER: 'developer',
+  MANAGER: 'manager',
+} as const
+
+export type ROLE = (typeof ROLE)[keyof typeof ROLE]
 
 export interface Task {
   id: string
   title: string
   description: string
-  status: 'open' | 'in_progress' | 'review' | 'closed'
-  priority: 'low' | 'medium' | 'high' | 'critical'
+  status: STATUS
+  priority: PRIORITY
   createdAt: string
   updatedAt: string
   createdBy: string
   assignedTo: string
+  projectId: string
 }
 
 export interface DailyTaskCount {
@@ -65,6 +91,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-15T10:00:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '1',
   },
   {
     id: '2',
@@ -76,6 +103,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-17T14:30:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '2',
   },
   {
     id: '3',
@@ -87,6 +115,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-19T11:45:00Z',
     createdBy: '3',
     assignedTo: '2',
+    projectId: '2',
   },
   {
     id: '4',
@@ -98,6 +127,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-12T16:30:00Z',
     createdBy: '3',
     assignedTo: '2',
+    projectId: '1',
   },
   {
     id: '5',
@@ -109,18 +139,43 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-20T13:10:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '6',
+    title: 'Fix dependencies',
+    description: 'Update all npm packages to latest versions',
+    status: 'closed',
+    priority: 'low',
+    createdAt: '2025-04-20T13:10:00Z',
+    updatedAt: '2025-04-20T13:10:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '7',
+    title: 'Update SSH',
+    description: 'Update SSH latest versions',
+    status: 'review',
+    priority: 'medium',
+    createdAt: '2025-04-20T13:10:00Z',
+    updatedAt: '2025-04-20T13:10:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+    projectId: '1',
   },
 ]
 
 // Mock daily task counts for trend line
 export const dailyTaskCounts: DailyTaskCount[] = [
-  {date: '2025-04-17', count: 3},
-  {date: '2025-04-18', count: 4},
-  {date: '2025-04-19', count: 5},
-  {date: '2025-04-20', count: 4},
-  {date: '2025-04-21', count: 3},
-  {date: '2025-04-22', count: 5},
-  {date: '2025-04-23', count: 4},
+  { date: '2025-04-17', count: 3 },
+  { date: '2025-04-18', count: 4 },
+  { date: '2025-04-19', count: 5 },
+  { date: '2025-04-20', count: 4 },
+  { date: '2025-04-21', count: 3 },
+  { date: '2025-04-22', count: 5 },
+  { date: '2025-04-23', count: 4 },
 ]
 
 interface Project {
@@ -130,11 +185,11 @@ interface Project {
 }
 
 export const projects: Project[] = [
-  {id: '1', name: 'TeamX', description: 'Frontend Team'},
-  {id: '2', name: 'TeamY', description: 'Backend Team'},
+  { id: '1', name: 'TeamX', description: 'Frontend Team' },
+  { id: '2', name: 'TeamY', description: 'Backend Team' },
 ]
 
-interface Bug {
+export interface Bug {
   id: string
   title: string
   description: string

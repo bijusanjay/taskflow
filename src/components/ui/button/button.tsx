@@ -1,8 +1,8 @@
 import React from 'react'
-import {Button as AntButton} from 'antd'
-import {ButtonProps as AntButtonProps} from 'antd/lib/button'
+import { Button as AntButton } from 'antd'
+import { ButtonProps as AntButtonProps } from 'antd/lib/button'
 import styled from 'styled-components'
-import {COLORS} from '@utils/constants'
+import { COLORS } from '@utils/constants'
 
 const focusStyle = `
   .ant-select-selector {

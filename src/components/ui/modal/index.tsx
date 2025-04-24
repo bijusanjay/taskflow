@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  Modal as AntdModal,
-  ModalProps as AntdModalProps,
-  Button,
-  Row,
-} from 'antd'
+import { Modal as AntdModal, ModalProps as AntdModalProps, Button, Row } from 'antd'
 import { COLORS } from '@utils/constants'
 
 type ModalProps = AntdModalProps & {
@@ -16,20 +11,9 @@ type ModalProps = AntdModalProps & {
 }
 
 // Form Modal Component
-const FormModal: React.FC<ModalProps> = ({
-  isEdit,
-  children,
-  cancelCallBack,
-  ...props
-}) => {
+const FormModal: React.FC<ModalProps> = ({ isEdit, children, cancelCallBack, ...props }) => {
   return (
-    <AntdModal
-      closeIcon={false}
-      {...props}
-      width={465}
-      footer={null}
-      onCancel={cancelCallBack}
-    >
+    <AntdModal closeIcon={false} {...props} width={465} footer={null} onCancel={cancelCallBack}>
       {children}
     </AntdModal>
   )
@@ -51,13 +35,9 @@ const AlertDeleteModal: React.FC<ModalProps> = ({
       width={544}
       onCancel={cancelCallBack}
       footer={
-        <Row justify={'end'} className='gap-2'>
+        <Row justify={'end'} className="gap-2">
           <Button onClick={cancelCallBack}>{cancelBtnText}</Button>
-          <Button
-            type='primary'
-            onClick={okCallback}
-            style={{ background: COLORS.red }}
-          >
+          <Button type="primary" onClick={okCallback} style={{ background: COLORS.red }}>
             {okBtnText}
           </Button>
         </Row>

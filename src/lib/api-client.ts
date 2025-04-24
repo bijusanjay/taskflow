@@ -1,5 +1,5 @@
-import axios, {AxiosInstance, AxiosRequestConfig} from 'axios'
-export type {AxiosError} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+export type { AxiosError } from 'axios'
 import AuthApi from '@features/auth/api'
 import DashboardApi from '@features/dashboard/api'
 

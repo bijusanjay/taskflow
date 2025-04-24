@@ -1,5 +1,5 @@
-import {TablePaginationConfig} from 'antd'
-import {JSX, useMemo} from 'react'
+import { TablePaginationConfig } from 'antd'
+import { JSX, useMemo } from 'react'
 
 type Column<T> = {
   title: string
@@ -15,13 +15,13 @@ const useTableConfig = <T>(
   pagination: TablePaginationConfig,
   setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>,
   columnsConfig: Column<T>[],
-  scroll?: {x?: number; y?: number},
+  scroll?: { x?: number; y?: number },
   total?: number
 ) => {
   const columns = useMemo(() => {
-    return columnsConfig.map((column) => ({
+    return columnsConfig.map(column => ({
       ...column,
-      render: column.render ?? ((text) => text),
+      render: column.render ?? (text => text),
     }))
   }, [columnsConfig])
 

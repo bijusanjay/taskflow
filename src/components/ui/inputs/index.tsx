@@ -49,9 +49,7 @@ export const NumberInput = props => <StyledInputNumber {...props} />
 export const RadioInput = props => <StyledRadio {...props} />
 export const CheckboxInput = props => <StyledCheckbox {...props} />
 
-export const renderSelectOptions = (
-  options: { label: string; value: string }[],
-) => {
+export const renderSelectOptions = (options: { label: string; value: string }[]) => {
   return options.map(option => {
     return (
       <SelectInput.Option key={option.value} value={option.value}>
