@@ -1,6 +1,6 @@
-import {create} from 'zustand'
-import {persist} from 'zustand/middleware'
-import {createApiInstance} from '@/utils/helper'
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { createApiInstance } from '@/utils/helper'
 import Api from '@lib/api-client'
 
 export interface ApiInstance {
@@ -24,18 +24,18 @@ interface AppState {
 
 const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    set => ({
       apiInstance: createApiInstance(),
       themeMode: 'light',
-      setThemeMode: (mode) => set({themeMode: mode}),
+      setThemeMode: mode => set({ themeMode: mode }),
       organizations: [],
-      setOrganizations: (orgs) => set({organizations: orgs}),
+      setOrganizations: orgs => set({ organizations: orgs }),
       activeOrganization: undefined,
-      setActiveOrganization: (org) => set({activeOrganization: org}),
+      setActiveOrganization: org => set({ activeOrganization: org }),
     }),
     {
       name: 'active-organization-store',
-      partialize: (state) => ({activeOrganization: state.activeOrganization}),
+      partialize: state => ({ activeOrganization: state.activeOrganization }),
     }
   )
 )

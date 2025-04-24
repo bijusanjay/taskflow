@@ -14,11 +14,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
   } = theme.useToken()
   return (
     <Header
-      className='border-b border-[#EBEBEB]'
+      className="border-b border-[#EBEBEB]"
       style={{ padding: 0, background: colorBgContainer }}
     >
-      <Row justify={'start'} className='p-5'>
-        <Title level={3} className='mb-0'>
+      <Row justify={'start'} className="p-5">
+        <Title level={3} className="mb-0">
           {title}
         </Title>
       </Row>

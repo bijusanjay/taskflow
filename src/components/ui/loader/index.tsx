@@ -15,7 +15,7 @@ const Loader: React.FC<LoaderProps> = ({
   ...restProps
 }) => (
   <Row
-    justify='center'
+    justify="center"
     style={{
       alignContent: 'center',
       height: fullscreen ? '100vh' : '100%',

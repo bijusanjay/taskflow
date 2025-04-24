@@ -1,4 +1,4 @@
-import {Card, Tabs} from 'antd'
+import { Card, Tabs } from 'antd'
 import styled from 'styled-components'
 
 export const FormContainer = styled.div`

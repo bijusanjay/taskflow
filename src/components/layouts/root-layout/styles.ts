@@ -1,7 +1,7 @@
-import {Layout} from 'antd'
+import { Layout } from 'antd'
 import styled from 'styled-components'
 
-const {Header, Content} = Layout
+const { Header, Content } = Layout
 
 export const Logo = styled.div`
   height: 32px;

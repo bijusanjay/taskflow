@@ -15,11 +15,9 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     () =>
       new QueryClient({
         defaultOptions: queryConfig,
-      }),
+      })
   )
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 
 export default AppProvider

@@ -13,4 +13,4 @@ declare let process: {
 const NODE_ENVIRONMENT = process.env.NEXT_PUBLIC_ENV
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
-export {NODE_ENVIRONMENT, BASE_URL}
+export { NODE_ENVIRONMENT, BASE_URL }

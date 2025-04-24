@@ -13,26 +13,25 @@ export const STATUS = {
   IN_PROGRESS: 'in_progress',
   REVIEW: 'review',
   CLOSED: 'closed',
-} as const;
+} as const
 
-export type STATUS = typeof STATUS[keyof typeof STATUS];
+export type STATUS = (typeof STATUS)[keyof typeof STATUS]
 
 export const PRIORITY = {
   LOW: 'low',
   MEDIUM: 'medium',
   HIGH: 'high',
   CRITICAL: 'critical',
-} as const;
+} as const
 
-export type PRIORITY = typeof PRIORITY[keyof typeof PRIORITY];
+export type PRIORITY = (typeof PRIORITY)[keyof typeof PRIORITY]
 
 export const ROLE = {
   DEVELOPER: 'developer',
   MANAGER: 'manager',
-} as const;
+} as const
 
-export type ROLE = typeof ROLE[keyof typeof ROLE];
-
+export type ROLE = (typeof ROLE)[keyof typeof ROLE]
 
 export interface Task {
   id: string
@@ -164,19 +163,19 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-20T13:10:00Z',
     createdBy: '3',
     assignedTo: '1',
-    projectId: '1',  
+    projectId: '1',
   },
 ]
 
 // Mock daily task counts for trend line
 export const dailyTaskCounts: DailyTaskCount[] = [
-  {date: '2025-04-17', count: 3},
-  {date: '2025-04-18', count: 4},
-  {date: '2025-04-19', count: 5},
-  {date: '2025-04-20', count: 4},
-  {date: '2025-04-21', count: 3},
-  {date: '2025-04-22', count: 5},
-  {date: '2025-04-23', count: 4},
+  { date: '2025-04-17', count: 3 },
+  { date: '2025-04-18', count: 4 },
+  { date: '2025-04-19', count: 5 },
+  { date: '2025-04-20', count: 4 },
+  { date: '2025-04-21', count: 3 },
+  { date: '2025-04-22', count: 5 },
+  { date: '2025-04-23', count: 4 },
 ]
 
 interface Project {
@@ -186,8 +185,8 @@ interface Project {
 }
 
 export const projects: Project[] = [
-  {id: '1', name: 'TeamX', description: 'Frontend Team'},
-  {id: '2', name: 'TeamY', description: 'Backend Team'},
+  { id: '1', name: 'TeamX', description: 'Frontend Team' },
+  { id: '2', name: 'TeamY', description: 'Backend Team' },
 ]
 
 export interface Bug {
