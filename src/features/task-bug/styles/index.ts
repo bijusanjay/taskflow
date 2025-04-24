@@ -1,4 +1,4 @@
-import {Card} from 'antd'
+import {Card, Tabs} from 'antd'
 import styled from 'styled-components'
 
 export const FormContainer = styled.div`
@@ -42,4 +42,18 @@ export const HeaderWrapper = styled.div`
 
 export const HeaderTitle = styled.div`
   margin-top: 16px;
+`
+
+export const ProjectHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+`
+
+export const StyledTabs = styled(Tabs)`
+  background: white;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 `

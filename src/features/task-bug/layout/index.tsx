@@ -1,171 +1,16 @@
-import React, {useState} from 'react'
-import {Layout, Table, Tag, Space, Button, Typography, Tabs, Select} from 'antd'
-import {BugOutlined, ProjectOutlined, FilterOutlined} from '@ant-design/icons'
-import styled from 'styled-components'
+import React, {useMemo, useState} from 'react'
+import { Table, Tag, Space, Button, Typography, Tabs, Select} from 'antd'
+import {BugOutlined, ProjectOutlined, FilterOutlined, LinkOutlined} from '@ant-design/icons'
 import {useRouter} from 'next/navigation'
-import {users} from '@config/mock-data'
+import {Bug, bugs, projects, Task, tasks, User, users} from '@config/mock-data'
+import { ProjectHeader, StyledTabs } from '../styles'
+import { priorityColors, statusColors } from '@utils/constants'
+import Link from 'next/link'
 
-const {Sider} = Layout
 const {Title} = Typography
 const {TabPane} = Tabs
 
-// Types
-interface Task {
-  id: string
-  title: string
-  description: string
-  status: 'open' | 'in_progress' | 'closed'
-  priority: 'low' | 'medium' | 'high'
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  assignedTo: string
-  projectId: string
-}
-
-interface Bug {
-  id: string
-  title: string
-  description: string
-  status: 'open' | 'in_progress' | 'closed'
-  priority: 'low' | 'medium' | 'high'
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  assignedTo: string
-  projectId: string
-}
-
-interface Project {
-  id: string
-  name: string
-  description: string
-}
-
-interface User {
-  id: string
-  name: string
-  role: 'manager' | 'developer'
-}
-
-// Sample data
-const projects: Project[] = [
-  {id: '1', name: 'TeamX', description: 'Frontend Team'},
-  {id: '2', name: 'TeamY', description: 'Backend Team'},
-]
-
-const tasks: Task[] = [
-  {
-    id: '1',
-    title: 'Fix login button',
-    description: 'The login button is not working properly on the mobile view',
-    status: 'open',
-    priority: 'high',
-    createdAt: '2025-04-15T10:00:00Z',
-    updatedAt: '2025-04-15T10:00:00Z',
-    createdBy: '3',
-    assignedTo: '1',
-    projectId: '1',
-  },
-  {
-    id: '2',
-    title: 'Add form validation',
-    description: 'The registration form needs email validation',
-    status: 'in_progress',
-    priority: 'medium',
-    createdAt: '2025-04-16T09:00:00Z',
-    updatedAt: '2025-04-17T14:30:00Z',
-    createdBy: '3',
-    assignedTo: '1',
-    projectId: '1',
-  },
-  {
-    id: '3',
-    title: 'Create user profile page',
-    description: 'Design and implement user profile section',
-    status: 'open',
-    priority: 'low',
-    createdAt: '2025-04-18T11:00:00Z',
-    updatedAt: '2025-04-18T11:00:00Z',
-    createdBy: '3',
-    assignedTo: '2',
-    projectId: '2',
-  },
-]
-
-const bugs: Bug[] = [
-  {
-    id: '1',
-    title: 'Login page crashes',
-    description: 'The app crashes when wrong credentials are entered',
-    status: 'open',
-    priority: 'high',
-    createdAt: '2025-04-14T15:00:00Z',
-    updatedAt: '2025-04-14T15:00:00Z',
-    createdBy: '2',
-    assignedTo: '1',
-    projectId: '1',
-  },
-  {
-    id: '2',
-    title: 'Images not loading',
-    description: 'Product images not loading in the product page',
-    status: 'in_progress',
-    priority: 'medium',
-    createdAt: '2025-04-16T13:20:00Z',
-    updatedAt: '2025-04-17T09:15:00Z',
-    createdBy: '1',
-    assignedTo: '2',
-    projectId: '1',
-  },
-  {
-    id: '3',
-    title: 'API timeout',
-    description: 'The payment API times out after 30 seconds',
-    status: 'closed',
-    priority: 'high',
-    createdAt: '2025-04-10T10:30:00Z',
-    updatedAt: '2025-04-12T16:45:00Z',
-    createdBy: '2',
-    assignedTo: '1',
-    projectId: '2',
-  },
-]
-
-// const users: User[] = [
-//   {id: '1', name: 'John Doe', role: 'developer'},
-//   {id: '2', name: 'Jane Smith', role: 'developer'},
-//   {id: '3', name: 'Robert Johnson', role: 'manager'},
-// ]
-
-const ProjectHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-`
-
-const StyledTabs = styled(Tabs)`
-  background: white;
-  padding: 16px;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-`
-
-// Status and priority color mapping
-const statusColors = {
-  open: 'blue',
-  in_progress: 'orange',
-  closed: 'green',
-}
-
-const priorityColors = {
-  low: 'green',
-  medium: 'orange',
-  high: 'red',
-}
-
-const Dashboard: React.FC = () => {
+const TasksAndBugsLayout: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<string>('1')
   const router = useRouter()
   const currentUser: User = users[0]
@@ -190,11 +35,26 @@ const Dashboard: React.FC = () => {
     router.push(`/project/${projectId}/${type}s/${id}`)
   }
 
-  const taskColumns = [
+  const taskColumns = useMemo(()=> [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+      render: (text: string, record: Task) => {
+        return (
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/project/${record.projectId}/tasks/${record.id}`}
+              className="text-blue-600 hover:underline flex items-center gap-1"
+            >             
+              <span>{text}</span>
+              <div style={{marginLeft: '8px'}}>
+              <LinkOutlined/>
+              </div>
+            </Link>
+          </div>
+        );
+      }
     },
     {
       title: 'Status',
@@ -237,13 +97,28 @@ const Dashboard: React.FC = () => {
         </Space>
       ),
     },
-  ]
+  ],[])
 
-  const bugColumns = [
+  const bugColumns = useMemo(()=> [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+      render: (text: string, record: Task) => {
+        return (
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/project/${record.projectId}/bugs/${record.id}`}
+              className="text-blue-600 hover:underline flex items-center gap-1"
+            >             
+              <span>{text}</span>
+              <div style={{marginLeft: '8px'}}>
+              <LinkOutlined/>
+              </div>
+            </Link>
+          </div>
+        );
+      }
     },
     {
       title: 'Status',
@@ -286,7 +161,7 @@ const Dashboard: React.FC = () => {
         </Space>
       ),
     },
-  ]
+  ],[])
 
   const handleCreateBtn = (type: string) => {
     router.push(`/create/${type}`)
@@ -358,4 +233,4 @@ const Dashboard: React.FC = () => {
   )
 }
 
-export default Dashboard
+export default TasksAndBugsLayout

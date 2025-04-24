@@ -164,7 +164,7 @@ export const projects: Project[] = [
   {id: '2', name: 'TeamY', description: 'Backend Team'},
 ]
 
-interface Bug {
+export interface Bug {
   id: string
   title: string
   description: string
