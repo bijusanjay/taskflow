@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskFlow - Bug and Task Management System
+
+TaskFlow is a web application built with Next.js for managing tasks and bugs in software development projects. It provides a streamlined interface for developers and managers to track, update, and manage their work items efficiently.
+
+## Features
+
+- **Task & Bug Management**: Create, view, edit, and delete tasks and bugs
+- **Project Organization**: Filter tasks and bugs by project
+- **Status Tracking**: Track items through different statuses (Open, In Progress, Closed)
+- **Priority Management**: Set and filter by priority levels (Low, Medium, High)
+- **User Assignment**: Assign tasks and bugs to team members
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **UI Components**: Ant Design
+- **State Management**: Zustand
+- **Styling**: Tailwind CSS, Styled Components
+- **Development Tools**: ESLint, Prettier
+
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Git
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+   ```bash
+   git clone [Repo URL]
+   cd taskflow
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install or npm i
+   # or
+   yarn
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open your browser**
+   Visit [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+src/
+├── app/                 # Next.js app directory
+├── components/          # Reusable components
+├── features/           # Feature-based modules
+│   └── task-bug/       # Task and bug management
+├── stores/             # State management
+├── styles/             # Global styles
+├── types/              # TypeScript types
+└── utils/              # Utility functions
+```
