@@ -3,17 +3,43 @@ export interface User {
   id: string
   username: string
   password: string
-  role: 'developer' | 'manager'
+  role: ROLE
   name: string
   avatar: string
 }
+
+export const STATUS = {
+  OPEN: 'open',
+  IN_PROGRESS: 'in_progress',
+  REVIEW: 'review',
+  CLOSED: 'closed',
+} as const;
+
+export type STATUS = typeof STATUS[keyof typeof STATUS];
+
+export const PRIORITY = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+  CRITICAL: 'critical',
+} as const;
+
+export type PRIORITY = typeof PRIORITY[keyof typeof PRIORITY];
+
+export const ROLE = {
+  DEVELOPER: 'developer',
+  MANAGER: 'manager',
+} as const;
+
+export type ROLE = typeof ROLE[keyof typeof ROLE];
+
 
 export interface Task {
   id: string
   title: string
   description: string
-  status: 'open' | 'in_progress' | 'review' | 'closed'
-  priority: 'low' | 'medium' | 'high' | 'critical'
+  status: STATUS
+  priority: PRIORITY
   createdAt: string
   updatedAt: string
   createdBy: string

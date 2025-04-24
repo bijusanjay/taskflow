@@ -17,10 +17,10 @@ export const statusColors = {
   open: 'blue',
   in_progress: 'orange',
   closed: 'green',
-}
+} as const
 
 export const priorityColors = {
   low: 'green',
   medium: 'orange',
   high: 'red',
-}
+} as const
