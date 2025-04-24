@@ -18,6 +18,7 @@ export interface Task {
   updatedAt: string
   createdBy: string
   assignedTo: string
+  projectId: string
 }
 
 export interface DailyTaskCount {
@@ -65,6 +66,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-15T10:00:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '1',
   },
   {
     id: '2',
@@ -76,6 +78,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-17T14:30:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '2',
   },
   {
     id: '3',
@@ -87,6 +90,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-19T11:45:00Z',
     createdBy: '3',
     assignedTo: '2',
+    projectId: '2',
   },
   {
     id: '4',
@@ -98,6 +102,7 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-12T16:30:00Z',
     createdBy: '3',
     assignedTo: '2',
+    projectId: '1',
   },
   {
     id: '5',
@@ -109,6 +114,31 @@ export const tasks: Task[] = [
     updatedAt: '2025-04-20T13:10:00Z',
     createdBy: '3',
     assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '6',
+    title: 'Fix dependencies',
+    description: 'Update all npm packages to latest versions',
+    status: 'closed',
+    priority: 'low',
+    createdAt: '2025-04-20T13:10:00Z',
+    updatedAt: '2025-04-20T13:10:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '7',
+    title: 'Update SSH',
+    description: 'Update SSH latest versions',
+    status: 'review',
+    priority: 'medium',
+    createdAt: '2025-04-20T13:10:00Z',
+    updatedAt: '2025-04-20T13:10:00Z',
+    createdBy: '3',
+    assignedTo: '1',
+    projectId: '1',  
   },
 ]
 
