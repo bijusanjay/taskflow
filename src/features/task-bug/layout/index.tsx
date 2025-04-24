@@ -366,7 +366,7 @@ const TasksAndBugsLayout: React.FC = () => {
       {activeTab === 'bugs' && (
         <Table
           dataSource={filteredBugs}
-          columns={bugColumns}
+          columns={bugColumns as any}
           rowKey="id"
           pagination={{ pageSize: 10 }}
         />
