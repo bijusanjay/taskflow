@@ -12,7 +12,7 @@ class TaskApi {
     { data: Task[]; err?: undefined } | { err: string; data?: undefined }
   > => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 0))
       return { data: tasks }
     } catch (error) {
       return { err: 'Failed to fetch tasks' }
@@ -23,7 +23,7 @@ class TaskApi {
     userId: string
   ): Promise<{ data: Task[]; err?: undefined } | { err: string; data?: undefined }> => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 0))
       const userTasks = tasks.filter(task => task.assignedTo === userId)
       return { data: userTasks }
     } catch (error) {
@@ -35,7 +35,7 @@ class TaskApi {
     { data: DailyTaskCount[]; err?: undefined } | { err: string; data?: undefined }
   > => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 0))
       return { data: dailyTaskCounts }
     } catch (error) {
       return { err: 'Failed to fetch daily task counts' }
@@ -47,7 +47,7 @@ class TaskApi {
     status: Task['status']
   ): Promise<{ data: Task; err?: undefined } | { err: string; data?: undefined }> => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 0))
 
       const taskIndex = tasks.findIndex(task => task.id === taskId)
       if (taskIndex === -1) {
