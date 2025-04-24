@@ -1,21 +1,20 @@
 'use client'
 
 import { Card, Table, Alert } from 'antd'
-import { LinkOutlined } from '@ant-design/icons'
 import { useAuthStore } from '@stores/auth-store'
 import useFetch from '@hooks/use-fetch'
 import useAppStore from '@stores/app-store'
 import Loader from '@components/ui/loader'
-import Link from 'next/link'
-import { Task } from '@config/mock-data'
 import TrendChart from '../components/trend-chart'
 import StatsCard from '../components/stats-card'
-import { Fragment, useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
+import { taskColumns, bugColumns } from '../components/columns'
 
 export default function Dashboard() {
   const { user } = useAuthStore()
   const { apiInstance } = useAppStore()
   const isDeveloper = user?.role === 'developer'
+  const isManager = user?.role === 'manager'
 
   const {
     data: tasksData,
@@ -29,107 +28,102 @@ export default function Dashboard() {
   )
 
   const {
+    data: bugsData,
+    loading: bugsLoading,
+    error: bugsError,
+  } = useFetch(
+    isManager
+      ? apiInstance.client.dashboardApi.getAllBugs
+      : apiInstance.client.dashboardApi.getUserBugs,
+    !isManager ? user?.id : undefined
+  )
+
+  const {
     data: trendData,
     loading: trendLoading,
     error: trendError,
   } = useFetch(apiInstance.client.dashboardApi.getDailyTaskCounts)
 
-  const columns = useMemo(
-    () => [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        width: 60,
-      },
-      {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-        render: (text: string, record: Task) => {
-          return (
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/project/${record.projectId}/tasks/${record.id}`}
-                className="flex items-center gap-1 text-blue-600 hover:underline"
-              >
-                <span>{text}</span>
-                <div style={{ marginLeft: '8px' }}>
-                  <LinkOutlined />
-                </div>
-              </Link>
-            </div>
-          )
-        },
-      },
-      {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        render: (status: string) => {
-          switch (status) {
-            case 'open':
-              return <span style={{ color: '#ff4d4f' }}>Open</span>
-            case 'in_progress':
-              return <span style={{ color: '#faad14' }}>In Progress</span>
-            case 'review':
-              return <span style={{ color: '#1890ff' }}>Review</span>
-            case 'closed':
-              return <span style={{ color: '#52c41a' }}>Closed</span>
-            default:
-              return status
-          }
-        },
-      },
-      {
-        title: 'Priority',
-        dataIndex: 'priority',
-        key: 'priority',
-        render: (priority: string) => {
-          switch (priority) {
-            case 'critical':
-              return <span style={{ color: '#f5222d', fontWeight: 'bold' }}>Critical</span>
-            case 'high':
-              return <span style={{ color: '#fa541c' }}>High</span>
-            case 'medium':
-              return <span style={{ color: '#faad14' }}>Medium</span>
-            case 'low':
-              return <span style={{ color: '#52c41a' }}>Low</span>
-            default:
-              return priority
-          }
-        },
-      },
-      {
-        title: 'Created At',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (date: string) => new Date(date).toLocaleDateString(),
-      },
-    ],
-    []
-  )
+  const stats = useMemo(() => {
+    if (!tasksData) return []
 
-  if (tasksLoading || trendLoading) {
+    const totalTasks = tasksData.length
+    const openTasks = tasksData.filter(task => task.status === 'open').length
+    const inProgressTasks = tasksData.filter(task => task.status === 'in_progress').length
+    const closedTasks = tasksData.filter(task => task.status === 'closed').length
+
+    return [
+      { title: 'Total Tasks', value: totalTasks, color: '#1890ff' },
+      { title: 'Open Tasks', value: openTasks, color: '#faad14' },
+      { title: 'In Progress', value: inProgressTasks, color: '#52c41a' },
+      { title: 'Closed Tasks', value: closedTasks, color: '#722ed1' },
+    ]
+  }, [tasksData])
+
+  const bugStats = useMemo(() => {
+    if (!bugsData) return []
+
+    const totalBugs = bugsData.length
+    const openBugs = bugsData.filter(bug => bug.status === 'open').length
+    const pendingBugs = bugsData.filter(bug => bug.status === 'pending_approval').length
+    const closedBugs = bugsData.filter(bug => bug.status === 'closed').length
+
+    return [
+      { title: 'Total Bugs', value: totalBugs, color: '#ff4d4f' },
+      { title: 'Open Bugs', value: openBugs, color: '#faad14' },
+      { title: 'Pending Approval', value: pendingBugs, color: '#1890ff' },
+      { title: 'Closed Bugs', value: closedBugs, color: '#52c41a' },
+    ]
+  }, [bugsData])
+
+  useEffect(() => {
+    console.log('Dashboard bugsData:', bugsData)
+  }, [bugsData])
+
+  if (tasksLoading || trendLoading || bugsLoading) {
     return <Loader />
   }
 
-  if (tasksError || trendError) {
-    return <Alert type="error" message={tasksError || trendError} />
+  if (tasksError || trendError || bugsError) {
+    return <Alert message="Error loading dashboard data" type="error" />
   }
 
   return (
-    <Fragment>
-      {/* Stats Cards */}
-      <StatsCard tasksData={tasksData} />
+    <div className="p-6">
+      <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard tasksData={tasksData} />
+      </div>
 
-      {/* Trend Chart */}
-      <TrendChart trendData={trendData} />
+      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Card title="Task Trend">
+          <TrendChart trendData={trendData} />
+        </Card>
+        {/* {isManager && bugsData && (
+          <Card title="Bug Status Distribution">
+            <BugDistributionChart bugs={bugsData} />
+          </Card>
+        )} */}
+      </div>
 
-      {/* Recent Tasks Table */}
-      <Card title="Recent Tasks">
-        <Table dataSource={tasksData} columns={columns} rowKey="id" pagination={{ pageSize: 5 }} />
-      </Card>
-    </Fragment>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div style={{ marginTop: '20px' }}>
+          <Card title="Recent Tasks">
+            <Table dataSource={tasksData?.slice(0, 5)} columns={taskColumns} pagination={false} />
+          </Card>
+        </div>
+
+        <div style={{ marginTop: '20px' }}>
+          {isManager && (
+            <Card title="Pending Bug Approvals">
+              <Table
+                dataSource={bugsData?.filter(bug => bug.status === 'pending_approval').slice(0, 5)}
+                columns={bugColumns}
+                pagination={false}
+              />
+            </Card>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }

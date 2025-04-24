@@ -1,4 +1,4 @@
-import { DailyTaskCount, dailyTaskCounts, Task, tasks } from '@config/mock-data'
+import { Bug, bugs, DailyTaskCount, dailyTaskCounts, Task, tasks } from '@config/mock-data'
 import { AxiosInstance } from 'axios'
 
 class TaskApi {
@@ -19,6 +19,17 @@ class TaskApi {
     }
   }
 
+  getAllBugs = async (): Promise<
+    { data: Bug[]; err?: undefined } | { err: string; data?: undefined }
+  > => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 0))
+      return { data: bugs }
+    } catch (error) {
+      return { err: 'Failed to fetch bugs' }
+    }
+  }
+
   getUserTasks = async (
     userId: string
   ): Promise<{ data: Task[]; err?: undefined } | { err: string; data?: undefined }> => {
@@ -28,6 +39,18 @@ class TaskApi {
       return { data: userTasks }
     } catch (error) {
       return { err: 'Failed to fetch user tasks' }
+    }
+  }
+
+  getUserBugs = async (
+    userId: string
+  ): Promise<{ data: Bug[]; err?: undefined } | { err: string; data?: undefined }> => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 0))
+      const userbugs = bugs.filter(task => task.assignedTo === userId)
+      return { data: userbugs }
+    } catch (error) {
+      return { err: 'Failed to fetch user bugs' }
     }
   }
 

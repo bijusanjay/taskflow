@@ -193,19 +193,13 @@ export interface Bug {
   id: string
   title: string
   description: string
-  status: 'open' | 'in_progress' | 'closed'
+  status: 'open' | 'in_progress' | 'pending_approval' | 'closed'
   priority: 'low' | 'medium' | 'high'
   createdAt: string
   updatedAt: string
   createdBy: string
   assignedTo: string
   projectId: string
-}
-
-interface Project {
-  id: string
-  name: string
-  description: string
 }
 
 export const bugs: Bug[] = [
@@ -231,6 +225,102 @@ export const bugs: Bug[] = [
     updatedAt: '2025-04-17T09:15:00Z',
     createdBy: '1',
     assignedTo: '2',
+    projectId: '1',
+  },
+  {
+    id: '3',
+    title: 'API timeout error',
+    description: 'API requests timing out after 30 seconds',
+    status: 'pending_approval',
+    priority: 'high',
+    createdAt: '2025-04-18T10:30:00Z',
+    updatedAt: '2025-04-19T14:45:00Z',
+    createdBy: '1',
+    assignedTo: '2',
+    projectId: '2',
+  },
+  {
+    id: '4',
+    title: 'Mobile responsive issues',
+    description: 'Layout breaks on mobile devices',
+    status: 'pending_approval',
+    priority: 'medium',
+    createdAt: '2025-04-17T11:20:00Z',
+    updatedAt: '2025-04-18T16:30:00Z',
+    createdBy: '2',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '5',
+    title: 'Database connection error',
+    description: 'Intermittent database connection failures',
+    status: 'closed',
+    priority: 'high',
+    createdAt: '2025-04-10T09:15:00Z',
+    updatedAt: '2025-04-12T11:30:00Z',
+    createdBy: '1',
+    assignedTo: '2',
+    projectId: '2',
+  },
+  {
+    id: '6',
+    title: 'Performance optimization needed',
+    description: 'Page load time exceeds 5 seconds',
+    status: 'open',
+    priority: 'medium',
+    createdAt: '2025-04-19T14:00:00Z',
+    updatedAt: '2025-04-19T14:00:00Z',
+    createdBy: '2',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '7',
+    title: 'Security vulnerability',
+    description: 'XSS vulnerability in comment section',
+    status: 'pending_approval',
+    priority: 'high',
+    createdAt: '2025-04-15T16:45:00Z',
+    updatedAt: '2025-04-16T10:20:00Z',
+    createdBy: '1',
+    assignedTo: '2',
+    projectId: '2',
+  },
+  {
+    id: '8',
+    title: 'UI alignment issues',
+    description: 'Elements misaligned in Firefox browser',
+    status: 'in_progress',
+    priority: 'low',
+    createdAt: '2025-04-18T13:10:00Z',
+    updatedAt: '2025-04-19T09:30:00Z',
+    createdBy: '2',
+    assignedTo: '1',
+    projectId: '1',
+  },
+  {
+    id: '9',
+    title: 'Memory leak in dashboard',
+    description: 'Memory usage increases over time',
+    status: 'closed',
+    priority: 'high',
+    createdAt: '2025-04-11T10:00:00Z',
+    updatedAt: '2025-04-13T15:45:00Z',
+    createdBy: '1',
+    assignedTo: '2',
+    projectId: '2',
+  },
+  {
+    id: '10',
+    title: 'Search functionality broken',
+    description: 'Search returns incorrect results',
+    status: 'open',
+    priority: 'medium',
+    createdAt: '2025-04-20T09:30:00Z',
+    updatedAt: '2025-04-20T09:30:00Z',
+    createdBy: '2',
+    assignedTo: '1',
     projectId: '1',
   },
 ]

@@ -19,6 +19,7 @@ interface FilterBarProps {
 const statusOptions = [
   { value: 'open', label: 'Open' },
   { value: 'in_progress', label: 'In Progress' },
+  { value: 'pending_approval', label: 'Pending Approval' },
   { value: 'closed', label: 'Closed' },
 ]
 

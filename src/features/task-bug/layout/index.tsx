@@ -35,6 +35,7 @@ const TasksAndBugsLayout: React.FC = () => {
     null
   )
   const [selectedItem, setSelectedItem] = useState<Task | Bug | null>(null)
+  const [approvalModalVisible, setApprovalModalVisible] = useState(false)
 
   const router = useRouter()
   const pathname = usePathname()
@@ -116,6 +117,12 @@ const TasksAndBugsLayout: React.FC = () => {
 
   const handleDeleteCancel = () => {
     setItemToDelete(null)
+  }
+
+  const handleBugApproval = (record: Bug, approved: boolean) => {
+    // Make API call to update bug status
+    console.log(`Bug ${record.id} ${approved ? 'approved' : 'rejected'}`)
+    setApprovalModalVisible(false)
   }
 
   const taskColumns = useMemo(
@@ -250,24 +257,61 @@ const TasksAndBugsLayout: React.FC = () => {
       {
         title: 'Actions',
         key: 'actions',
-        width: '10%',
+        width: '15%',
         render: (record: Bug) => (
           <Space size="middle">
-            {/* <Button
+            <Button
               type="primary"
               size="small"
               onClick={() => handleItemClick('bug', record.id, record.projectId)}
             >
               View
-            </Button> */}
-            <Button
-              type="default"
-              size="small"
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
-            >
-              Edit
             </Button>
+            {user.role === 'developer' && (
+              <>
+                <Button
+                  type="default"
+                  size="small"
+                  icon={<EditOutlined />}
+                  onClick={() => handleEdit(record)}
+                >
+                  Edit
+                </Button>
+                {record.status === 'in_progress' && (
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={() => {
+                      setSelectedItem(record)
+                      setEditModalVisible(true)
+                    }}
+                  >
+                    Mark for Review
+                  </Button>
+                )}
+              </>
+            )}
+            {user.role === 'manager' && record.status === 'pending_approval' && (
+              <>
+                <Button
+                  style={{ background: '#52c41a' }}
+                  type="primary"
+                  size="small"
+                  onClick={() => handleBugApproval(record, true)}
+                >
+                  Approve
+                </Button>
+                <Button
+                  style={{ background: '#8c8c8c' }}
+                  type="primary"
+                  danger
+                  size="small"
+                  onClick={() => handleBugApproval(record, false)}
+                >
+                  Reject
+                </Button>
+              </>
+            )}
             <Button
               type="primary"
               danger
@@ -281,7 +325,7 @@ const TasksAndBugsLayout: React.FC = () => {
         ),
       },
     ],
-    []
+    [user.role]
   )
 
   const handleCreateBtn = (type: string) => {
