@@ -1,25 +1,7 @@
 import React, { useMemo, useState } from 'react'
-import {
-  Descriptions,
-  Tag,
-  Button,
-  Space,
-  Select,
-  Divider,
-  Timeline,
-  Typography,
-  Form,
-  Input,
-  Modal,
-  Breadcrumb,
-} from 'antd'
-import {
-  EditOutlined,
-  ClockCircleOutlined,
-  CommentOutlined,
-  ArrowLeftOutlined,
-} from '@ant-design/icons'
-import { useParams, useRouter } from 'next/navigation'
+import { Descriptions, Tag, Button, Space, Divider, Timeline, Typography, Breadcrumb } from 'antd'
+import { EditOutlined, ClockCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import {
   DetailCard,
   DetailsContainer,
@@ -29,13 +11,14 @@ import {
 } from '../../styles'
 import { bugs, projects, tasks, User, users } from '@config/mock-data'
 import { priorityColors, statusColors } from '@utils/constants'
+import EditModal from '../edit-modal'
 
-const { TextArea } = Input
-const { Option } = Select
 const { Title, Paragraph, Text } = Typography
 
 const ItemDetailView: React.FC = () => {
   const params = useParams()
+  const pathname = usePathname()
+  const activeTab = pathname.split('/')[1] === 'bugs' ? 'bugs' : 'tasks'
 
   const projectId = params.projectId as string
   const type = params.type as string
@@ -43,8 +26,6 @@ const ItemDetailView: React.FC = () => {
 
   const router = useRouter()
   const [editModalVisible, setEditModalVisible] = useState(false)
-  const [commentModalVisible, setCommentModalVisible] = useState(false)
-  const [form] = Form.useForm()
   const currentUser: User = users[0]
 
   const isTask = type === 'tasks'
@@ -79,37 +60,18 @@ const ItemDetailView: React.FC = () => {
     []
   )
 
-  // Handle edit modal
   const showEditModal = () => {
-    form.setFieldsValue({
-      title: item?.title,
-      description: item?.description,
-      status: item?.status,
-      priority: item?.priority,
-      assignedTo: item?.assignedTo,
-    })
     setEditModalVisible(true)
   }
 
   const handleEditSubmit = (values: any) => {
     console.log('Updated values:', values)
-    // Here you would update the item via API
+    // Update the item via API
     setEditModalVisible(false)
   }
 
-  // Handle comment modal
-  const showCommentModal = () => {
-    setCommentModalVisible(true)
-  }
-
-  const handleCommentCancel = () => {
-    setCommentModalVisible(false)
-  }
-
-  const handleCommentSubmit = (values: any) => {
-    console.log('Comment submitted:', values)
-    // Here you would add the comment via API
-    setCommentModalVisible(false)
+  const handleEditCancel = () => {
+    setEditModalVisible(false)
   }
 
   if (!item) {
@@ -135,11 +97,13 @@ const ItemDetailView: React.FC = () => {
             </Title>
           </HeaderTitle>
           <Space>
-            <Button key="comment" icon={<CommentOutlined />} onClick={showCommentModal}>
-              Add Comment
-            </Button>
             {currentUser.role === 'developer' && (
-              <Button key="edit" type="primary" icon={<EditOutlined />} onClick={showEditModal}>
+              <Button
+                key="edit"
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={() => showEditModal()}
+              >
                 Edit
               </Button>
             )}
@@ -190,27 +154,18 @@ const ItemDetailView: React.FC = () => {
         </Timeline>
       </DetailCard>
 
-      {/* Comment Modal */}
-      <Modal
-        title="Add Comment"
-        open={commentModalVisible}
-        onCancel={handleCommentCancel}
-        footer={null}
-      >
-        <Form layout="vertical" onFinish={handleCommentSubmit}>
-          <Form.Item name="comment" rules={[{ required: true, message: 'Please enter a comment' }]}>
-            <TextArea rows={4} placeholder="Your comment" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit Comment
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+      {/* Edit Modal */}
+      {editModalVisible && (
+        <EditModal
+          visible={editModalVisible}
+          onCancel={handleEditCancel}
+          onSubmit={handleEditSubmit}
+          initialValues={item}
+          isTask={activeTab === 'tasks'}
+          users={users}
+        />
+      )}
     </DetailsContainer>
-    // <></>
   )
 }
 
