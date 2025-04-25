@@ -11,6 +11,7 @@ import Header from '../header'
 import Sidebar from '../sidebar'
 import { StyledContent } from './styles'
 import { LOGIN_ROUTES, PUBLIC_ROUTES } from '@utils/constants'
+import ErrorBoundary from '@components/error-boundary'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,7 +46,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   // Allow public and login routes to render without Layout
   if (isPublicRoute || isLoginRoute) {
-    return <Fragment>{children}</Fragment>
+    return (
+      <ErrorBoundary>
+        <Fragment>{children}</Fragment>
+      </ErrorBoundary>
+    )
   }
 
   if (!isAuthenticated) {
@@ -53,18 +58,20 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className={inter.className}>
-      <Head>
-        <title>Taskflow – Smarter bug tracking</title>
-      </Head>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Sidebar />
-        <Layout style={{ marginLeft: 250 }}>
-          <Header />
-          <StyledContent>{children}</StyledContent>
+    <ErrorBoundary>
+      <div className={inter.className}>
+        <Head>
+          <title>Taskflow – Smarter bug tracking</title>
+        </Head>
+        <Layout style={{ minHeight: '100vh' }}>
+          <Sidebar />
+          <Layout style={{ marginLeft: 250 }}>
+            <Header />
+            <StyledContent>{children}</StyledContent>
+          </Layout>
         </Layout>
-      </Layout>
-    </div>
+      </div>
+    </ErrorBoundary>
   )
 }
 

@@ -1,10 +1,11 @@
 import React from 'react'
-import { Form, Input, Select, Button, DatePicker, Space, Radio, Typography } from 'antd'
+import { Form, Input, Select, Button, Space, Typography, Row, Col, message } from 'antd'
 import { SaveOutlined, CloseOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import { useParams, useRouter } from 'next/navigation'
 import { projects, User, users } from '@config/mock-data'
 import { FormContainer, HeaderContent, StyledCard, StyledPageHeader } from '../../styles'
 import { useAuthStore } from '@stores/auth-store'
+import { formValidationHandler } from '@utils/form'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -18,12 +19,26 @@ const CreateItemForm: React.FC = () => {
   const isTask = type === 'task'
   const currentUser: User = user
 
-  const handleSubmit = (values: any) => {
-    console.log('Form values:', values)
-    // Submit the form data to your API
+  const handleSubmit = async (values: any) => {
+    const errorInfo = await formValidationHandler(form, async values => {
+      try {
+        // API call to create task/bug
+        message.success('Form submitted successfully!')
+      } catch (apiError) {
+        message.error('Something went wrong')
+        console.error('API Error:', apiError)
+      }
 
-    // Navigate back to dashboard
-    router.push('/dashboard')
+      console.log('Form values:', values)
+      // Submit the form data to your API
+
+      // Navigate back to dashboard
+      router.push('/dashboard')
+    })
+
+    if (errorInfo) {
+      message.error('Please check your input fields!')
+    }
   }
 
   const handleCancel = () => {
@@ -54,13 +69,6 @@ const CreateItemForm: React.FC = () => {
             priority: 'medium',
           }}
         >
-          <Form.Item name="type" label="Type">
-            <Radio.Group>
-              <Radio.Button value="task">Task</Radio.Button>
-              <Radio.Button value="bug">Bug</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-
           <Form.Item
             name="title"
             label="Title"
@@ -77,59 +85,65 @@ const CreateItemForm: React.FC = () => {
             <TextArea rows={4} placeholder="Provide a detailed description" />
           </Form.Item>
 
-          <Form.Item
-            name="projectId"
-            label="Project/Team"
-            rules={[{ required: true, message: 'Please select a project' }]}
-          >
-            <Select placeholder="Select a project">
-              {projects.map(project => (
-                <Option key={project.id} value={project.id}>
-                  {project.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="projectId"
+                label="Project/Team"
+                rules={[{ required: true, message: 'Please select a project' }]}
+              >
+                <Select placeholder="Select a project">
+                  {projects.map(project => (
+                    <Option key={project.id} value={project.id}>
+                      {project.name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="priority"
+                label="Priority"
+                rules={[{ required: true, message: 'Please select a priority' }]}
+              >
+                <Select>
+                  <Option value="low">Low</Option>
+                  <Option value="medium">Medium</Option>
+                  <Option value="high">High</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            name="priority"
-            label="Priority"
-            rules={[{ required: true, message: 'Please select a priority' }]}
-          >
-            <Select>
-              <Option value="low">Low</Option>
-              <Option value="medium">Medium</Option>
-              <Option value="high">High</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="status"
-            label="Status"
-            rules={[{ required: true, message: 'Please select a status' }]}
-          >
-            <Select>
-              <Option value="open">Open</Option>
-              <Option value="in_progress">In Progress</Option>
-              <Option value="closed">Closed</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="assignedTo" label="Assign To">
-            <Select placeholder="Select a developer">
-              {users
-                .filter(user => user.role === 'developer')
-                .map(user => (
-                  <Option key={user.id} value={user.id}>
-                    {user.name}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="dueDate" label="Due Date">
-            <DatePicker />
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="status"
+                label="Status"
+                rules={[{ required: true, message: 'Please select a status' }]}
+              >
+                <Select>
+                  <Option value="open">Open</Option>
+                  <Option value="in_progress">In Progress</Option>
+                  <Option value="closed">Closed</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="assignedTo" label="Assign To">
+                <Select placeholder="Select a developer">
+                  {users
+                    .filter(user => user.role === 'developer')
+                    .map(user => (
+                      <Option key={user.id} value={user.id}>
+                        {user.name}
+                      </Option>
+                    ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item name="createdBy" hidden>
             <Input />

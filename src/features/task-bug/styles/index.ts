@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const FormContainer = styled.div`
   padding: 24px;
   background: #f0f2f5;
-  min-height: 100vh;
+  // min-height: 100vh;
 `
 
 export const StyledCard = styled(Card)`
@@ -15,14 +15,17 @@ export const StyledPageHeader = styled.div`
   padding: 16px 24px;
   background: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
-  margin-top: 12px;
+  margin-bottom: 12px;
+  // margin-top: 12px;
+  display: flex;
+  align-items: center;
 `
 
 export const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  // margin-top: 8px;
+  margin-left: 12px;
 `
 
 export const DetailsContainer = styled.div`
