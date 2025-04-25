@@ -17,6 +17,7 @@ export const statusColors = {
   open: 'blue',
   in_progress: 'orange',
   closed: 'green',
+  pending_approval: 'red',
 } as const
 
 export const priorityColors = {

@@ -4,21 +4,23 @@ import { SaveOutlined, CloseOutlined, ArrowLeftOutlined } from '@ant-design/icon
 import { useParams, useRouter } from 'next/navigation'
 import { projects, User, users } from '@config/mock-data'
 import { FormContainer, HeaderContent, StyledCard, StyledPageHeader } from '../../styles'
+import { useAuthStore } from '@stores/auth-store'
 
 const { TextArea } = Input
 const { Option } = Select
 
 const CreateItemForm: React.FC = () => {
+  const { user } = useAuthStore()
   const params = useParams()
   const type = params.type as string
   const [form] = Form.useForm()
   const router = useRouter()
   const isTask = type === 'task'
-  const currentUser: User = users[0] // Assuming first user is logged in
+  const currentUser: User = user
 
   const handleSubmit = (values: any) => {
     console.log('Form values:', values)
-    // Here you would submit the form data to your API
+    // Submit the form data to your API
 
     // Navigate back to dashboard
     router.push('/dashboard')

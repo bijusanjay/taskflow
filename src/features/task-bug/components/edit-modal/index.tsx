@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal, Form, Input, Select, Button } from 'antd'
 import { User } from '@config/mock-data'
 
@@ -24,7 +24,7 @@ const EditModal: React.FC<EditModalProps> = ({
 }) => {
   const [form] = Form.useForm()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (visible && initialValues) {
       form.setFieldsValue(initialValues)
     }
