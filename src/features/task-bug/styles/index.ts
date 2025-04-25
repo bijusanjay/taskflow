@@ -16,7 +16,7 @@ export const StyledPageHeader = styled.div`
   background: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
-  margin-top: 12px
+  margin-top: 12px;
 `
 
 export const HeaderContent = styled.div`
@@ -33,6 +33,7 @@ export const DetailsContainer = styled.div`
 
 export const DetailCard = styled(Card)`
   margin-bottom: 24px;
+  margin-top: 12px;
 `
 
 export const HeaderWrapper = styled.div`
@@ -41,8 +42,7 @@ export const HeaderWrapper = styled.div`
   align-items: center;
 `
 
-export const HeaderTitle = styled.div`
-`
+export const HeaderTitle = styled.div``
 
 export const ProjectHeader = styled.div`
   display: flex;

@@ -17,6 +17,7 @@ export const statusColors = {
   open: 'blue',
   in_progress: 'orange',
   closed: 'green',
+  pending_approval: 'red',
 } as const
 
 export const priorityColors = {
@@ -24,3 +25,24 @@ export const priorityColors = {
   medium: 'orange',
   high: 'red',
 } as const
+
+export const PUBLIC_ROUTES = ['/']
+export const LOGIN_ROUTES = ['/login']
+
+export const features = [
+  {
+    title: 'Task Management',
+    description:
+      'Efficiently manage and track tasks with our intuitive interface. Assign tasks, set priorities, and monitor progress in real-time.',
+  },
+  {
+    title: 'Time Tracking',
+    description:
+      'Track time spent on tasks with our built-in timer. Get detailed insights into how time is being utilized across projects.',
+  },
+  {
+    title: 'Team Collaboration',
+    description:
+      'Enhance team collaboration with real-time updates, task assignments, and progress tracking. Keep everyone on the same page.',
+  },
+]

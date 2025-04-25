@@ -10,11 +10,9 @@ import Loader from '@components/ui/loader'
 import Header from '../header'
 import Sidebar from '../sidebar'
 import { StyledContent } from './styles'
+import { LOGIN_ROUTES, PUBLIC_ROUTES } from '@utils/constants'
 
 const inter = Inter({ subsets: ['latin'] })
-
-const PUBLIC_ROUTES = ['/']
-const LOGIN_ROUTES = ['/login']
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, setUserData } = useAuthStore()
@@ -57,7 +55,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className={inter.className}>
       <Head>
-        <title>Taskflow – Smarter bug Tracking</title>
+        <title>Taskflow – Smarter bug tracking</title>
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <Sidebar />

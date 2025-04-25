@@ -2,7 +2,8 @@ import React from 'react'
 import { Avatar, Dropdown, Space, Typography } from 'antd'
 import { useAuthStore } from '@stores/auth-store'
 import styled from 'styled-components'
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { LogoutOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/navigation'
 
 const { Text } = Typography
 
@@ -22,24 +23,30 @@ const HeaderContainer = styled.header`
 
 const Header = () => {
   const { user, logout } = useAuthStore()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    localStorage.clear()
+    router.push('/login')
+  }
 
   const userMenuItems = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
-    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Logout',
-      onClick: logout,
+      onClick: handleLogout,
     },
   ]
 
   return (
     <HeaderContainer>
-      <Text strong>{user?.role === 'developer' ? 'Developer Dashboard' : 'Manager Dashboard'}</Text>
+      <Space>
+        <Text strong style={{ fontSize: '20px' }}>
+          {user?.role === 'developer' ? 'Developer Dashboard' : 'Manager Dashboard'}
+        </Text>
+      </Space>
       <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
         <Space style={{ cursor: 'pointer' }}>
           <Avatar src={user?.avatar} />

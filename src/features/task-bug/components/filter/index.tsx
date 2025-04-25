@@ -45,7 +45,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange }) => {
       <Select
         value={filters.project}
         onChange={value => handleFilterChange('project', value)}
-        style={{ minWidth: 200 }}
+        style={{ minWidth: 100 }}
         placeholder="Select Project"
         allowClear
       >
@@ -71,7 +71,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange }) => {
       <Select
         value={filters.priority}
         onChange={value => handleFilterChange('priority', value)}
-        style={{ minWidth: 150 }}
+        style={{ minWidth: 120 }}
         placeholder="Priority"
         allowClear
       >
