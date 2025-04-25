@@ -123,7 +123,7 @@ const TasksAndBugsLayout: React.FC = () => {
 
   const handleApprovalConfirm = () => {
     if (itemToApprove) {
-      // Here you would typically make an API call to update the bug status
+      // Make an API call to update the bug status
       console.log(`Bug ${itemToApprove.bug.id} ${itemToApprove.approved ? 'approved' : 'rejected'}`)
       setItemToApprove(null)
     }
@@ -139,7 +139,7 @@ const TasksAndBugsLayout: React.FC = () => {
 
   const handleReviewConfirm = () => {
     if (itemToReview) {
-      // Here you would typically make an API call to update the status
+      // Make an API call to update the status
       console.log(`Marking ${itemToReview.type} for review:`, itemToReview.item.id)
       Modal.success({
         title: 'Success',

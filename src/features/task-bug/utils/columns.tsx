@@ -1,8 +1,9 @@
-import { Button, Space, Tag, Modal } from 'antd'
-import { DeleteOutlined, EditOutlined, LinkOutlined, ClockCircleOutlined } from '@ant-design/icons'
+import { Button, Space, Tag } from 'antd'
+import { DeleteOutlined, LinkOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { Bug, Task, User } from '@config/mock-data'
 import { priorityColors, statusColors } from '@utils/constants'
+import { formatTime } from '@utils/helper'
 
 interface ColumnProps {
   users: User[]
@@ -13,15 +14,6 @@ interface ColumnProps {
   setSelectedItem?: (item: Bug | null) => void
   setEditModalVisible?: (visible: boolean) => void
   handleMarkForReview: (record: Task | Bug) => void
-}
-
-const formatTime = (ms: number) => {
-  const seconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  return `${hours.toString().padStart(2, '0')}:${(minutes % 60)
-    .toString()
-    .padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`
 }
 
 export const getTaskColumns = ({
@@ -88,24 +80,6 @@ export const getTaskColumns = ({
       )
     },
   },
-  // ...(user.role === 'developer'
-  //   ? [
-  //       {
-  //         title: 'Mark for Review',
-  //         key: 'markForReview',
-  //         render: (record: Task) => {
-  //           if (record.status === 'in_progress') {
-  //             return (
-  //               <Button type="default" onClick={() => handleMarkForReview(record)}>
-  //                 Mark for Review
-  //               </Button>
-  //             )
-  //           }
-  //           return null
-  //         },
-  //       },
-  //     ]
-  //   : []),
   ...(user.role === 'developer'
     ? [
         {
