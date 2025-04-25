@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Dropdown, Space, Typography } from 'antd'
 import { useAuthStore } from '@stores/auth-store'
 import styled from 'styled-components'
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { LogoutOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 
 const { Text } = Typography
@@ -27,6 +27,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout()
+    localStorage.clear()
     router.push('/login')
   }
 

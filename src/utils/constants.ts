@@ -25,3 +25,6 @@ export const priorityColors = {
   medium: 'orange',
   high: 'red',
 } as const
+
+export const PUBLIC_ROUTES = ['/']
+export const LOGIN_ROUTES = ['/login']
