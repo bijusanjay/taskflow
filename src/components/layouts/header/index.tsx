@@ -42,7 +42,11 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <Text strong>{user?.role === 'developer' ? 'Developer Dashboard' : 'Manager Dashboard'}</Text>
+      <Space>
+        <Text strong style={{ fontSize: '20px' }}>
+          {user?.role === 'developer' ? 'Developer Dashboard' : 'Manager Dashboard'}
+        </Text>
+      </Space>
       <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
         <Space style={{ cursor: 'pointer' }}>
           <Avatar src={user?.avatar} />
