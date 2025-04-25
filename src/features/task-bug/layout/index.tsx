@@ -76,14 +76,6 @@ const TasksAndBugsLayout: React.FC = () => {
     return filtered
   }, [filters])
 
-  const handleItemClick = (type: 'task' | 'bug', id: string, projectId: string) => {
-    router.push(`/project/${projectId}/${type}s/${id}`)
-  }
-
-  const handleTabChange = (activeKey: string) => {
-    router.push(`/${activeKey}`)
-  }
-
   const handleEdit = (record: Task | Bug) => {
     setSelectedItem(record)
     setEditModalVisible(true)

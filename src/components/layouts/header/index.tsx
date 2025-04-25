@@ -3,6 +3,7 @@ import { Avatar, Dropdown, Space, Typography } from 'antd'
 import { useAuthStore } from '@stores/auth-store'
 import styled from 'styled-components'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/navigation'
 
 const { Text } = Typography
 
@@ -22,18 +23,19 @@ const HeaderContainer = styled.header`
 
 const Header = () => {
   const { user, logout } = useAuthStore()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
 
   const userMenuItems = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
-    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Logout',
-      onClick: logout,
+      onClick: handleLogout,
     },
   ]
 
