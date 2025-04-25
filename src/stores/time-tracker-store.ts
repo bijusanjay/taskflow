@@ -15,14 +15,11 @@ interface TimeTrackerState {
   timeEntries: TimeEntry[]
   addTimeEntry: (entry: Omit<TimeEntry, 'id'>) => void
   updateTimeEntry: (id: string, updates: Partial<TimeEntry>) => void
-  getTaskTimeEntries: (taskId: string) => TimeEntry[]
-  getUserTimeEntries: (userId: string) => TimeEntry[]
-  getTotalTimeForTask: (taskId: string) => number
 }
 
 export const useTimeTrackerStore = create<TimeTrackerState>()(
   persist(
-    (set, get) => ({
+    set => ({
       timeEntries: [],
       addTimeEntry: entry =>
         set(state => ({
@@ -37,12 +34,6 @@ export const useTimeTrackerStore = create<TimeTrackerState>()(
             entry.id === id ? { ...entry, ...updates } : entry
           ),
         })),
-      getTaskTimeEntries: taskId => get().timeEntries.filter(entry => entry.taskId === taskId),
-      getUserTimeEntries: userId => get().timeEntries.filter(entry => entry.userId === userId),
-      getTotalTimeForTask: taskId =>
-        get()
-          .timeEntries.filter(entry => entry.taskId === taskId)
-          .reduce((total, entry) => total + entry.duration, 0),
     }),
     {
       name: 'time-tracker-storage',

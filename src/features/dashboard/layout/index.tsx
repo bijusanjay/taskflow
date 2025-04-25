@@ -8,9 +8,8 @@ import useAppStore from '@stores/app-store'
 import Loader from '@components/ui/loader'
 import TrendChart from '../components/trend-chart'
 import StatsCard from '../components/stats-card'
-import { taskColumns, bugColumns } from '../utils/columns'
 import TimeTrackingReport from '@features/task-bug/components/time-tracking-report'
-import { tasks, bugs, users } from '@config/mock-data'
+import { tasks, users } from '@config/mock-data'
 import { getTaskColumns, getBugColumns } from '@features/task-bug/utils/columns'
 
 export default function Dashboard() {
@@ -52,6 +51,7 @@ export default function Dashboard() {
     user,
     handleEdit: () => {},
     handleDelete: () => {},
+    handleMarkForReview: () => {},
   })
 
   const bugColumns = getBugColumns({
@@ -62,6 +62,7 @@ export default function Dashboard() {
     handleBugApproval: () => {},
     setSelectedItem: () => {},
     setEditModalVisible: () => {},
+    handleMarkForReview: () => {},
   })
 
   if (tasksLoading || trendLoading || bugsLoading) {
@@ -82,7 +83,11 @@ export default function Dashboard() {
         <Card title="Task Trend">
           <TrendChart trendData={trendData} />
         </Card>
-        {isManager && <TimeTrackingReport tasks={tasks} users={users} />}
+        {isManager && (
+          <div style={{ marginTop: '20px' }}>
+            <TimeTrackingReport tasks={tasks} users={users} />
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

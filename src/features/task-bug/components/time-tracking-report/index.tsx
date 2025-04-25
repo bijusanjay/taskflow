@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Card, Typography } from 'antd'
-import { useTimeTrackerStore } from '@stores/time-tracker-store'
 import { Task, User } from '@config/mock-data'
+import { formatTime } from '@utils/helper'
 
 const { Title } = Typography
 
@@ -11,15 +11,6 @@ interface TimeTrackingReportProps {
 }
 
 const TimeTrackingReport: React.FC<TimeTrackingReportProps> = ({ tasks, users }) => {
-  const { timeEntries, getTotalTimeForTask } = useTimeTrackerStore()
-
-  const formatTime = (ms: number) => {
-    const seconds = Math.floor(ms / 1000)
-    const minutes = Math.floor(seconds / 60)
-    const hours = Math.floor(minutes / 60)
-    return `${hours}h ${minutes % 60}m ${seconds % 60}s`
-  }
-
   const columns = [
     {
       title: 'Task',
@@ -35,7 +26,7 @@ const TimeTrackingReport: React.FC<TimeTrackingReportProps> = ({ tasks, users })
     {
       title: 'Total Time Spent',
       key: 'totalTime',
-      render: (record: Task) => formatTime(getTotalTimeForTask(record.id)),
+      render: (record: Task) => (record.timeSpent ? formatTime(record.timeSpent) : '-'),
     },
   ]
 
