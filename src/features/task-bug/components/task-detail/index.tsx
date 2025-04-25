@@ -57,7 +57,7 @@ const ItemDetailView: React.FC = () => {
         user: assignedUser?.name,
       },
     ],
-    []
+    [item, assignedUser]
   )
 
   const showEditModal = () => {
