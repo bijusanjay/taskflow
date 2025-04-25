@@ -6,6 +6,7 @@ import { Bug, bugs, Task, tasks, users } from '@config/mock-data'
 import { ProjectHeader } from '../styles'
 import FilterBar from '../components/filter'
 import EditModal from '../components/edit-modal'
+import TimeTracker from '../components/time-tracker'
 import { useAuthStore } from '@stores/auth-store'
 import { getTaskColumns, getBugColumns } from '../utils/columns'
 
@@ -18,6 +19,11 @@ interface FilterState {
 interface ApprovalState {
   bug: Bug
   approved: boolean
+}
+
+interface ReviewState {
+  item: Task | Bug
+  type: 'task' | 'bug'
 }
 
 const TasksAndBugsLayout: React.FC = () => {
@@ -33,6 +39,7 @@ const TasksAndBugsLayout: React.FC = () => {
     null
   )
   const [itemToApprove, setItemToApprove] = useState<ApprovalState | null>(null)
+  const [itemToReview, setItemToReview] = useState<ReviewState | null>(null)
   const [selectedItem, setSelectedItem] = useState<Task | Bug | null>(null)
 
   const router = useRouter()
@@ -41,7 +48,8 @@ const TasksAndBugsLayout: React.FC = () => {
   const activeTab = pathname.split('/')[1] === 'bugs' ? 'bugs' : 'tasks'
 
   const filteredTasks = useMemo(() => {
-    let filtered = tasks
+    let filtered =
+      user.role === 'developer' ? tasks.filter(task => task.assignedTo === user.id) : tasks
 
     if (filters.project) {
       filtered = filtered.filter(task => task.projectId === filters.project)
@@ -59,7 +67,7 @@ const TasksAndBugsLayout: React.FC = () => {
   }, [filters])
 
   const filteredBugs = useMemo(() => {
-    let filtered = bugs
+    let filtered = user.role === 'developer' ? bugs.filter(bug => bug.assignedTo === user.id) : bugs
 
     if (filters.project) {
       filtered = filtered.filter(bug => bug.projectId === filters.project)
@@ -125,6 +133,26 @@ const TasksAndBugsLayout: React.FC = () => {
     setItemToApprove(null)
   }
 
+  const handleMarkForReview = (record: Task | Bug, type: 'task' | 'bug') => {
+    setItemToReview({ item: record, type })
+  }
+
+  const handleReviewConfirm = () => {
+    if (itemToReview) {
+      // Here you would typically make an API call to update the status
+      console.log(`Marking ${itemToReview.type} for review:`, itemToReview.item.id)
+      Modal.success({
+        title: 'Success',
+        content: `"${itemToReview.item.title}" has been marked for review.`,
+      })
+      setItemToReview(null)
+    }
+  }
+
+  const handleReviewCancel = () => {
+    setItemToReview(null)
+  }
+
   const taskColumns = useMemo(
     () =>
       getTaskColumns({
@@ -132,8 +160,9 @@ const TasksAndBugsLayout: React.FC = () => {
         user,
         handleEdit,
         handleDelete,
+        handleMarkForReview: record => handleMarkForReview(record, 'task'),
       }),
-    [user, users, handleEdit, handleDelete]
+    [user, users, handleEdit, handleDelete, handleMarkForReview]
   )
 
   const bugColumns = useMemo(
@@ -146,8 +175,18 @@ const TasksAndBugsLayout: React.FC = () => {
         handleBugApproval,
         setSelectedItem,
         setEditModalVisible,
+        handleMarkForReview: record => handleMarkForReview(record, 'bug'),
       }),
-    [user, users, handleEdit, handleDelete, handleBugApproval, setSelectedItem, setEditModalVisible]
+    [
+      user,
+      users,
+      handleEdit,
+      handleDelete,
+      handleBugApproval,
+      setSelectedItem,
+      setEditModalVisible,
+      handleMarkForReview,
+    ]
   )
 
   const handleCreateBtn = (type: string) => {
@@ -163,14 +202,17 @@ const TasksAndBugsLayout: React.FC = () => {
         <Space>
           {user.role === 'developer' && (
             <>
+              {activeTab === 'tasks' && (
+                <>
+                  <TimeTracker tasks={tasks} currentProjectId={filters.project} />
+                  <Button icon={<ProjectOutlined />} onClick={() => handleCreateBtn('task')}>
+                    Create Task
+                  </Button>
+                </>
+              )}
               {activeTab === 'bugs' && (
                 <Button icon={<BugOutlined />} onClick={() => handleCreateBtn('bug')}>
                   Create Bug
-                </Button>
-              )}
-              {activeTab === 'tasks' && (
-                <Button icon={<ProjectOutlined />} onClick={() => handleCreateBtn('task')}>
-                  Create Task
                 </Button>
               )}
             </>
@@ -231,6 +273,20 @@ const TasksAndBugsLayout: React.FC = () => {
             Are you sure you want to {itemToApprove.approved ? 'approve' : 'reject'} this bug? This
             action cannot be undone.
           </p>
+        </Modal>
+      )}
+
+      {/* Review Confirmation Modal */}
+      {!!itemToReview && (
+        <Modal
+          title="Mark for Review"
+          open={!!itemToReview}
+          onOk={handleReviewConfirm}
+          onCancel={handleReviewCancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <p>Are you sure you want to mark "{itemToReview.item.title}" for review?</p>
         </Modal>
       )}
 

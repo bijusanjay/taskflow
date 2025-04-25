@@ -1,5 +1,5 @@
-import { Button, Space, Tag } from 'antd'
-import { DeleteOutlined, EditOutlined, LinkOutlined } from '@ant-design/icons'
+import { Button, Space, Tag, Modal } from 'antd'
+import { DeleteOutlined, EditOutlined, LinkOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { Bug, Task, User } from '@config/mock-data'
 import { priorityColors, statusColors } from '@utils/constants'
@@ -12,9 +12,25 @@ interface ColumnProps {
   handleBugApproval?: (record: Bug, approved: boolean) => void
   setSelectedItem?: (item: Bug | null) => void
   setEditModalVisible?: (visible: boolean) => void
+  handleMarkForReview: (record: Task | Bug) => void
 }
 
-export const getTaskColumns = ({ users, user, handleEdit, handleDelete }: ColumnProps) => [
+const formatTime = (ms: number) => {
+  const seconds = Math.floor(ms / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  return `${hours.toString().padStart(2, '0')}:${(minutes % 60)
+    .toString()
+    .padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`
+}
+
+export const getTaskColumns = ({
+  users,
+  user,
+  handleEdit,
+  handleDelete,
+  handleMarkForReview,
+}: ColumnProps) => [
   {
     title: 'Title',
     dataIndex: 'title',
@@ -59,6 +75,37 @@ export const getTaskColumns = ({ users, user, handleEdit, handleDelete }: Column
       return assignee?.name || 'Unassigned'
     },
   },
+  {
+    title: 'Time Spent',
+    key: 'timeSpent',
+    render: (record: Task) => {
+      if (!record.timeSpent) return '-'
+      return (
+        <Space>
+          <ClockCircleOutlined />
+          <span>{formatTime(record.timeSpent)}</span>
+        </Space>
+      )
+    },
+  },
+  // ...(user.role === 'developer'
+  //   ? [
+  //       {
+  //         title: 'Mark for Review',
+  //         key: 'markForReview',
+  //         render: (record: Task) => {
+  //           if (record.status === 'in_progress') {
+  //             return (
+  //               <Button type="default" onClick={() => handleMarkForReview(record)}>
+  //                 Mark for Review
+  //               </Button>
+  //             )
+  //           }
+  //           return null
+  //         },
+  //       },
+  //     ]
+  //   : []),
   ...(user.role === 'developer'
     ? [
         {
@@ -67,12 +114,6 @@ export const getTaskColumns = ({ users, user, handleEdit, handleDelete }: Column
           width: '10%',
           render: (record: Task) => (
             <Space size="middle">
-              <Button
-                type="default"
-                size="middle"
-                icon={<EditOutlined />}
-                onClick={() => handleEdit(record)}
-              ></Button>
               <Button
                 type="primary"
                 danger
@@ -95,12 +136,13 @@ export const getBugColumns = ({
   handleBugApproval,
   setSelectedItem,
   setEditModalVisible,
+  handleMarkForReview,
 }: ColumnProps) => [
   {
     title: 'Title',
     dataIndex: 'title',
     key: 'title',
-    render: (text: string, record: Task) => {
+    render: (text: string, record: Bug) => {
       return (
         <div className="flex items-center gap-2">
           <Link
@@ -120,7 +162,7 @@ export const getBugColumns = ({
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (status: 'open' | 'in_progress' | 'closed') => (
+    render: (status: 'open' | 'in_progress' | 'closed' | 'pending_approval') => (
       <Tag color={statusColors[status]}>{status.replace('_', ' ').toUpperCase()}</Tag>
     ),
   },
@@ -140,58 +182,48 @@ export const getBugColumns = ({
       return assignee?.name || 'Unassigned'
     },
   },
+  ...(user.role === 'developer'
+    ? [
+        {
+          title: 'Mark for Review',
+          key: 'markForReview',
+          render: (record: Bug) => {
+            if (record.status === 'in_progress') {
+              return (
+                <Button type="default" onClick={() => handleMarkForReview(record)}>
+                  Mark for Review
+                </Button>
+              )
+            }
+            return null
+          },
+        },
+      ]
+    : []),
   {
     title: 'Actions',
     key: 'actions',
-    width: '15%',
     render: (record: Bug) => (
       <Space size="middle">
         {user.role === 'developer' && (
-          <>
-            <Button
-              type="default"
-              size="middle"
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
-            ></Button>
-            <Button
-              type="primary"
-              danger
-              size="middle"
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.id, 'bug')}
-            ></Button>
-            {record.status === 'in_progress' && (
-              <Button
-                type="primary"
-                size="middle"
-                onClick={() => {
-                  setSelectedItem?.(record)
-                  setEditModalVisible?.(true)
-                }}
-              >
-                Mark for Review
-              </Button>
-            )}
-          </>
+          <Button
+            type="primary"
+            danger
+            size="middle"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.id, 'bug')}
+          ></Button>
         )}
         {user.role === 'manager' && record.status === 'pending_approval' && (
           <>
             <Button
-              style={{ background: '#52c41a' }}
               type="primary"
-              size="middle"
+              style={{ background: '#52c41a', borderColor: '#52c41a' }}
               onClick={() => handleBugApproval?.(record, true)}
             >
               Approve
             </Button>
-            <Button
-              style={{ background: '#8c8c8c' }}
-              type="primary"
-              danger
-              size="middle"
-              onClick={() => handleBugApproval?.(record, false)}
-            >
+            <Button type="primary" danger onClick={() => handleBugApproval?.(record, false)}>
               Reject
             </Button>
           </>

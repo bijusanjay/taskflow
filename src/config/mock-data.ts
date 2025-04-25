@@ -44,6 +44,7 @@ export interface Task {
   createdBy: string
   assignedTo: string
   projectId: string
+  timeSpent?: number // in milliseconds
 }
 
 export interface DailyTaskCount {
@@ -92,6 +93,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '1',
     projectId: '1',
+    timeSpent: 7200000, // 2 hours
   },
   {
     id: '2',
@@ -104,6 +106,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '1',
     projectId: '2',
+    timeSpent: 3600000, // 1 hour
   },
   {
     id: '3',
@@ -116,6 +119,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '2',
     projectId: '2',
+    timeSpent: 10800000, // 3 hours
   },
   {
     id: '4',
@@ -128,6 +132,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '2',
     projectId: '1',
+    timeSpent: 5400000, // 1.5 hours
   },
   {
     id: '5',
@@ -140,6 +145,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '1',
     projectId: '1',
+    timeSpent: 1800000, // 30 minutes
   },
   {
     id: '6',
@@ -152,6 +158,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '1',
     projectId: '1',
+    timeSpent: 900000, // 15 minutes
   },
   {
     id: '7',
@@ -164,6 +171,7 @@ export const tasks: Task[] = [
     createdBy: '3',
     assignedTo: '1',
     projectId: '1',
+    timeSpent: 2700000, // 45 minutes
   },
 ]
 

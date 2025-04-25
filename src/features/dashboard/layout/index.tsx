@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Card, Table, Alert } from 'antd'
 import { useAuthStore } from '@stores/auth-store'
 import useFetch from '@hooks/use-fetch'
@@ -8,6 +9,9 @@ import Loader from '@components/ui/loader'
 import TrendChart from '../components/trend-chart'
 import StatsCard from '../components/stats-card'
 import { taskColumns, bugColumns } from '../utils/columns'
+import TimeTrackingReport from '@features/task-bug/components/time-tracking-report'
+import { tasks, bugs, users } from '@config/mock-data'
+import { getTaskColumns, getBugColumns } from '@features/task-bug/utils/columns'
 
 export default function Dashboard() {
   const { user } = useAuthStore()
@@ -43,6 +47,23 @@ export default function Dashboard() {
     error: trendError,
   } = useFetch(apiInstance.client.dashboardApi.getDailyTaskCounts)
 
+  const taskColumns = getTaskColumns({
+    users,
+    user,
+    handleEdit: () => {},
+    handleDelete: () => {},
+  })
+
+  const bugColumns = getBugColumns({
+    users,
+    user,
+    handleEdit: () => {},
+    handleDelete: () => {},
+    handleBugApproval: () => {},
+    setSelectedItem: () => {},
+    setEditModalVisible: () => {},
+  })
+
   if (tasksLoading || trendLoading || bugsLoading) {
     return <Loader />
   }
@@ -61,6 +82,7 @@ export default function Dashboard() {
         <Card title="Task Trend">
           <TrendChart trendData={trendData} />
         </Card>
+        {isManager && <TimeTrackingReport tasks={tasks} users={users} />}
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -75,7 +97,7 @@ export default function Dashboard() {
             <Card title="Pending Bug Approvals">
               <Table
                 dataSource={bugsData?.filter(bug => bug.status === 'pending_approval').slice(0, 5)}
-                columns={bugColumns}
+                columns={bugColumns as any}
                 pagination={false}
               />
             </Card>

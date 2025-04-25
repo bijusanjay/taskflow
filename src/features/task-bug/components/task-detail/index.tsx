@@ -80,36 +80,26 @@ const ItemDetailView: React.FC = () => {
 
   return (
     <DetailsContainer>
-      <Breadcrumb
-        items={[
-          { title: 'Home' },
-          { title: project?.name || 'Project' },
-          { title: isTask ? 'Tasks' : 'Bugs' },
-          { title: item.id },
-        ]}
-      />
-      <StyledPageHeader>
-        <HeaderWrapper>
-          <HeaderTitle>
-            <Button type="text" icon={<ArrowLeftOutlined />} onClick={() => router.back()} />
-            <Title level={4} style={{ marginBottom: 0, display: 'inline-block', marginLeft: 8 }}>
-              {`${isTask ? 'Task' : 'Bug'} Details`}
-            </Title>
-          </HeaderTitle>
-          <Space>
-            {currentUser.role === 'developer' && (
-              <Button
-                key="edit"
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={() => showEditModal()}
-              >
-                Edit
-              </Button>
-            )}
-          </Space>
-        </HeaderWrapper>
-      </StyledPageHeader>
+      <HeaderWrapper>
+        <HeaderTitle>
+          <Button type="text" icon={<ArrowLeftOutlined />} onClick={() => router.back()} />
+          <Title level={4} style={{ marginBottom: 0, display: 'inline-block', marginLeft: 8 }}>
+            {`${isTask ? 'Task' : 'Bug'} Details`}
+          </Title>
+        </HeaderTitle>
+        <Space>
+          {currentUser.role === 'developer' && (
+            <Button
+              key="edit"
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => showEditModal()}
+            >
+              Edit
+            </Button>
+          )}
+        </Space>
+      </HeaderWrapper>
 
       <DetailCard>
         <Title level={4}>{item.title}</Title>
