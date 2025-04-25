@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Typography, Space, Card } from 'antd'
 import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
+import { features } from '@utils/constants'
 
 const { Title, Paragraph } = Typography
 
@@ -34,24 +35,6 @@ const FeaturesContainer = styled.div`
 
 const HomePage = () => {
   const router = useRouter()
-
-  const features = [
-    {
-      title: 'Task Management',
-      description:
-        'Efficiently manage and track tasks with our intuitive interface. Assign tasks, set priorities, and monitor progress in real-time.',
-    },
-    {
-      title: 'Time Tracking',
-      description:
-        'Track time spent on tasks with our built-in timer. Get detailed insights into how time is being utilized across projects.',
-    },
-    {
-      title: 'Team Collaboration',
-      description:
-        'Enhance team collaboration with real-time updates, task assignments, and progress tracking. Keep everyone on the same page.',
-    },
-  ]
 
   return (
     <LandingContainer>
