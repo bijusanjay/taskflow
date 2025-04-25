@@ -10,7 +10,7 @@ import TrendChart from '../components/trend-chart'
 import StatsCard from '../components/stats-card'
 import TimeTrackingReport from '@features/task-bug/components/time-tracking-report'
 import { tasks, users } from '@config/mock-data'
-import { getTaskColumns, getBugColumns } from '@features/task-bug/utils/columns'
+import { taskColumns, bugColumns } from '@features/dashboard/utils/columns'
 
 export default function Dashboard() {
   const { user } = useAuthStore()
@@ -46,25 +46,6 @@ export default function Dashboard() {
     error: trendError,
   } = useFetch(apiInstance.client.dashboardApi.getDailyTaskCounts)
 
-  const taskColumns = getTaskColumns({
-    users,
-    user,
-    handleEdit: () => {},
-    handleDelete: () => {},
-    handleMarkForReview: () => {},
-  })
-
-  const bugColumns = getBugColumns({
-    users,
-    user,
-    handleEdit: () => {},
-    handleDelete: () => {},
-    handleBugApproval: () => {},
-    setSelectedItem: () => {},
-    setEditModalVisible: () => {},
-    handleMarkForReview: () => {},
-  })
-
   if (tasksLoading || trendLoading || bugsLoading) {
     return <Loader />
   }
@@ -98,15 +79,13 @@ export default function Dashboard() {
         </div>
 
         <div style={{ marginTop: '20px' }}>
-          {isManager && (
-            <Card title="Pending Bug Approvals">
-              <Table
-                dataSource={bugsData?.filter(bug => bug.status === 'pending_approval').slice(0, 5)}
-                columns={bugColumns as any}
-                pagination={false}
-              />
-            </Card>
-          )}
+          <Card title="Pending Bug Approvals">
+            <Table
+              dataSource={bugsData?.filter(bug => bug.status === 'pending_approval').slice(0, 5)}
+              columns={bugColumns as any}
+              pagination={false}
+            />
+          </Card>
         </div>
       </div>
     </div>

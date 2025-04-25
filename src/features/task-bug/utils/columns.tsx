@@ -174,35 +174,35 @@ export const getBugColumns = ({
         },
       ]
     : []),
-  // {
-  //   title: 'Actions',
-  //   key: 'actions',
-  //   render: (record: Bug) => (
-  //     <Space size="middle">
-  //       {user.role === 'developer' && (
-  //         <Button
-  //           type="primary"
-  //           danger
-  //           size="middle"
-  //           icon={<DeleteOutlined />}
-  //           onClick={() => handleDelete(record.id, 'bug')}
-  //         ></Button>
-  //       )}
-  //       {user.role === 'manager' && record.status === 'pending_approval' && (
-  //         <>
-  //           <Button
-  //             type="primary"
-  //             style={{ background: '#52c41a', borderColor: '#52c41a' }}
-  //             onClick={() => handleBugApproval?.(record, true)}
-  //           >
-  //             Approve
-  //           </Button>
-  //           <Button type="primary" danger onClick={() => handleBugApproval?.(record, false)}>
-  //             Reject
-  //           </Button>
-  //         </>
-  //       )}
-  //     </Space>
-  //   ),
-  // },
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (record: Bug) => (
+      <Space size="middle">
+        {user.role === 'developer' && (
+          <Button
+            type="primary"
+            danger
+            size="middle"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.id, 'bug')}
+          ></Button>
+        )}
+        {user.role === 'manager' && record.status === 'pending_approval' && (
+          <>
+            <Button
+              type="primary"
+              style={{ background: '#52c41a', borderColor: '#52c41a' }}
+              onClick={() => handleBugApproval?.(record, true)}
+            >
+              Approve
+            </Button>
+            <Button type="primary" danger onClick={() => handleBugApproval?.(record, false)}>
+              Reject
+            </Button>
+          </>
+        )}
+      </Space>
+    ),
+  },
 ]
