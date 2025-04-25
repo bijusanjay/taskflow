@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, Form, Select, Space, Typography } from 'antd'
+import { Button, Modal, Form, Select, Space, Typography, message } from 'antd'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -32,6 +32,7 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
   const [timeEntry, setTimeEntry] = useState<TimeEntry | null>(null)
   const [elapsedTime, setElapsedTime] = useState('00:00:00')
   const { addTimeEntry, updateTimeEntry } = useTimeTrackerStore()
+  const [messageApi, contextHolder] = message.useMessage()
 
   // Load saved time entry from localStorage
   useEffect(() => {
@@ -143,6 +144,8 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
       })
       setTimeEntry(null)
       setElapsedTime('00:00:00')
+
+      messageApi.success(`Time sheet updated successfully`)
     }
   }
 
@@ -159,6 +162,7 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
 
   return (
     <>
+      {contextHolder}
       {!timeEntry ? (
         <Button
           type="primary"
