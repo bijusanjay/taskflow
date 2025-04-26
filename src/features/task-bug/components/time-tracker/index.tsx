@@ -8,7 +8,6 @@ import {
 } from '@ant-design/icons'
 import { Task } from '@config/mock-data'
 import { useAuthStore } from '@stores/auth-store'
-import { useTimeTrackerStore } from '@stores/time-tracker-store'
 
 const { Text } = Typography
 const { Option } = Select
@@ -31,7 +30,6 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
   const { user } = useAuthStore()
   const [timeEntry, setTimeEntry] = useState<TimeEntry | null>(null)
   const [elapsedTime, setElapsedTime] = useState('00:00:00')
-  const { addTimeEntry, updateTimeEntry } = useTimeTrackerStore()
   const [messageApi, contextHolder] = message.useMessage()
 
   // Load saved time entry from localStorage
@@ -91,28 +89,15 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
     }
     setTimeEntry(newTimeEntry)
     setElapsedTime('00:00:00')
-    addTimeEntry({
-      taskId: values.taskId,
-      userId: user.id,
-      startTime: Date.now(),
-      duration: 0,
-      isRunning: true,
-    })
     setIsModalVisible(false)
     form.resetFields()
   }
 
   const handlePause = () => {
     if (timeEntry) {
-      const duration = Date.now() - timeEntry.startTime
       setTimeEntry({
         ...timeEntry,
         pausedTime: Date.now(),
-        isRunning: false,
-      })
-      updateTimeEntry(timeEntry.taskId, {
-        endTime: Date.now(),
-        duration,
         isRunning: false,
       })
     }
@@ -127,21 +112,11 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
         pausedTime: 0,
         isRunning: true,
       })
-      updateTimeEntry(timeEntry.taskId, {
-        startTime: Date.now(),
-        isRunning: true,
-      })
     }
   }
 
   const handleStop = () => {
     if (timeEntry) {
-      const duration = Date.now() - timeEntry.startTime
-      updateTimeEntry(timeEntry.taskId, {
-        endTime: Date.now(),
-        duration,
-        isRunning: false,
-      })
       setTimeEntry(null)
       setElapsedTime('00:00:00')
 
@@ -192,35 +167,39 @@ const TimeTracker: React.FC<TimeTrackerProps> = ({ tasks, currentProjectId }) =>
         </Space>
       )}
 
-      <Modal
-        title="Start Time Tracking"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form form={form} onFinish={handleStart} layout="vertical">
-          <Form.Item
-            name="taskId"
-            label="Select Task"
-            rules={[{ required: true, message: 'Please select a task' }]}
-          >
-            <Select placeholder="Select a task">
-              {tasks
-                .filter(task => task.projectId === currentProjectId && task.assignedTo === user.id)
-                .map(task => (
-                  <Option key={task.id} value={task.id}>
-                    {task.title}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Start Tracking
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+      {isModalVisible && (
+        <Modal
+          title="Start Time Tracking"
+          open={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Form form={form} onFinish={handleStart} layout="vertical">
+            <Form.Item
+              name="taskId"
+              label="Select Task"
+              rules={[{ required: true, message: 'Please select a task' }]}
+            >
+              <Select placeholder="Select a task">
+                {tasks
+                  .filter(
+                    task => task.projectId === currentProjectId && task.assignedTo === user.id
+                  )
+                  .map(task => (
+                    <Option key={task.id} value={task.id}>
+                      {task.title}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Start Tracking
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      )}
     </>
   )
 }
