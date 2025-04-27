@@ -6,6 +6,8 @@ import { projects, User, users } from '@config/mock-data'
 import { FormContainer, HeaderContent, StyledCard, StyledPageHeader } from '../../styles'
 import { useAuthStore } from '@stores/auth-store'
 import { formValidationHandler } from '@utils/form'
+import useFetch from '@hooks/use-fetch'
+import useAppStore from '@stores/app-store'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -18,6 +20,17 @@ const CreateItemForm: React.FC = () => {
   const router = useRouter()
   const isTask = type === 'task'
   const currentUser: User = user
+  const { apiInstance } = useAppStore()
+
+  const {
+    data: userList,
+    loading: userLoading,
+    error: userError,
+  } = useFetch(
+    apiInstance.client.userApi.getUsers
+  )
+
+  console.log({userList})
 
   const handleSubmit = async (values: any) => {
     const errorInfo = await formValidationHandler(form, async values => {
@@ -133,9 +146,8 @@ const CreateItemForm: React.FC = () => {
             <Col span={12}>
               <Form.Item name="assignedTo" label="Assign To">
                 <Select placeholder="Select a developer">
-                  {users
-                    .filter(user => user.role === 'developer')
-                    .map(user => (
+                  {userList                   
+                    ?.map(user => (
                       <Option key={user.id} value={user.id}>
                         {user.name}
                       </Option>
