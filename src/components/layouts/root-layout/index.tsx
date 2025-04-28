@@ -9,7 +9,7 @@ import { Inter } from 'next/font/google'
 import Loader from '@components/ui/loader'
 import Header from '../header'
 import Sidebar from '../sidebar'
-import { StyledContent } from './styles'
+import { StyledContent, StyledDiv } from './styles'
 import { LOGIN_ROUTES, PUBLIC_ROUTES } from '@utils/constants'
 import ErrorBoundary from '@components/error-boundary'
 
@@ -48,7 +48,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   if (isPublicRoute || isLoginRoute) {
     return (
       <ErrorBoundary>
-        <Fragment>{children}</Fragment>
+        <StyledDiv>{children}</StyledDiv>
       </ErrorBoundary>
     )
   }

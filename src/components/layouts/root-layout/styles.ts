@@ -29,3 +29,8 @@ export const StyledContent = styled(Content)`
   min-height: calc(100vh - 112px);
   border-radius: 4px;
 `
+
+export const StyledDiv = styled.div`
+  background: white;
+  min-height: 100vh;
+`
