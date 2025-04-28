@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Tooltip, Tag, Badge, Image } from 'antd'
+import { Table, Tooltip, Tag, Badge, Image, Switch } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import styled from 'styled-components'
 
@@ -46,10 +46,6 @@ const CategoryTag = styled(Tag)`
   color: #00796b;
   border: none;
   font-size: 12px;
-`
-
-const StatusBadge = styled(Badge)`
-  font-size: 14px;
 `
 
 // Mock Data
@@ -136,7 +132,7 @@ const columns: ColumnsType<Product> = [
     dataIndex: 'price',
     key: 'price',
     render: value => `₹${Math.round(value / 1000)}K`,
-    responsive: ['md'],
+    // responsive: ['md'],
   },
   {
     title: 'Launch',
@@ -189,9 +185,11 @@ const columns: ColumnsType<Product> = [
     dataIndex: 'status',
     key: 'status',
     render: status => (
-      <StatusBadge
-        status={status === 'active' ? 'success' : 'error'}
-        text={status === 'active' ? 'Active' : 'Inactive'}
+      <Switch
+        checked={status === 'active'}
+        size="small"
+        // checkedChildren="On"
+        // unCheckedChildren="Off"
       />
     ),
   },
